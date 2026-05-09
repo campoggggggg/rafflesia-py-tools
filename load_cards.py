@@ -26,3 +26,5 @@ if __name__ == "__main__":
     df = load_cards()
     print(df[["name", "type_line", "color", "cost_neutral", "cost_color", "atk", "def"]].head(10))
     print(f"\nShape: {df.shape}")
+    print(df.columns.tolist())
+    print(df.dtypes)
