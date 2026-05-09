@@ -495,9 +495,6 @@ df_minions["ps_temp"] = df_minions.apply(
 )
 P75_MINION = df_minions["ps_temp"].quantile(0.75)
 
-print(f"MEDIAN_COST: {MEDIAN_COST}")
-print(f"P75_MINION:  {P75_MINION}")
-
 if __name__ == "__main__":
     df[["power_score", "contributions"]] = df.apply(
         lambda card: pd.Series(power_score(card)), axis=1
