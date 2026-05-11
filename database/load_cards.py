@@ -1,6 +1,6 @@
 #load_cards.py
 import pandas as pd
-from db_conn import get_client
+from database.db_conn import get_client
 
 def load_cards():
     db = get_client()

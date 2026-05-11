@@ -37,7 +37,6 @@ def normalize_text(raw: str) -> str:
     t = t.replace("move all minions to the bottom", "destroy all minions")
     t = t.replace("move target enemy minion to the bottom", "destroy target enemy minion")
 
-    t = t.replace("sacrifice this", "destroy target friendly minion")
     t = t.replace("sacrifice a minion", "destroy target friendly minion")
     t = t.replace("sacrifice 1 minion", "destroy target friendly minion")
     t = re.sub(r"sacrifice (\d+) other", lambda m: 

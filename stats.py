@@ -1,4 +1,5 @@
 # stats.py
+import os
 import pandas as pd
 import numpy as np
 from scipy import stats
@@ -6,12 +7,18 @@ from scipy.stats import skew, kurtosis, median_abs_deviation
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from power_score import df, power_score  # df già ha cost_total, color, etc.
+from efficiency import df, efficiency  # df già ha cost_total, color, etc.
 
-# add power_score al df
+PLOTS_DIR = os.path.join(os.path.dirname(__file__), "plots")
+os.makedirs(PLOTS_DIR, exist_ok=True)
 
-df[["power_score", "contributions"]] = df.apply(
-    lambda card: pd.Series(power_score(card)), axis=1
+def save(fig, name):
+    fig.savefig(os.path.join(PLOTS_DIR, f"{name}.png"), bbox_inches="tight")
+
+# add efficiency al df
+
+df[["efficiency", "contributions"]] = df.apply(
+    lambda card: pd.Series(efficiency(card)), axis=1
 )
 
 # feature
@@ -46,20 +53,13 @@ def describe_pool(df, cols, label=""):
 def describe_by_color(df, cols, label=""):
     result = (
         df.groupby("color")[cols]
-        .agg(["mean", "median", "std", 
+        .agg(["mean", "median", "std",
               ("skewness", lambda x: x.skew()),
               ("kurtosis", lambda x: x.kurtosis())])
     )
     print(f"\n--- {label} ---")
     return result
 
-describe_pool(df_play, ["cost_total", "power_score"], label="Pool intero")
-describe_pool(df_minions, ["atk", "def", "stat_sum", "vanilla_rate"], label="Solo Minion")
-describe_pool(df_spells, ["cost_total", "power_score"], label="Solo Spell")
-
-describe_by_color(df_play, ["cost_total", "power_score"], label="Pool intero x colore")
-describe_by_color(df_minions, ["atk", "def", "stat_sum", "vanilla_rate"], label="Solo Minion x colore")
-describe_by_color(df_spells, ["cost_total", "power_score"], label="Solo Spell x colore")
 
 # boxplot 4 colori
 data = df_play
@@ -71,16 +71,20 @@ palette = {"blue": "#336699",
            "colorless": "#A19993"}
 
 fig, ax = plt.subplots()
-sns.boxplot(data=data, x="color", y="power_score", hue="color", palette=palette, legend=False, ax=ax)
-ax.set_title("Power Score per Colore")
+sns.boxplot(data=data, x="color", y="efficiency", hue="color", palette=palette, legend=False, ax=ax)
+ax.set_title("Efficiency per Colore")
 ax.set_xlabel("colors")
-ax.set_ylabel("power_score")
+ax.set_ylabel("efficiency")
+save(fig, "boxplot_efficiency_per_colore")
 
 #kde colori
 fig, ax = plt.subplots()
 for c in palette:
     df_color = df_play[df_play["color"] == c]
-    sns.kdeplot(data=df_color, x="power_score", color=palette[c], ax=ax)
+    sns.kdeplot(data=df_color, x="efficiency", color=palette[c], label=c, ax=ax)
+ax.set_title("KDE Efficiency per Colore")
+ax.legend()
+save(fig, "kde_efficiency_colori")
 
 #kde rarity
 rarity_palette = {
@@ -91,9 +95,10 @@ rarity_palette = {
 fig, ax = plt.subplots()
 for r in df_play["rarity"].unique():
     df_rarity = df_play[df_play["rarity"] == r]
-    sns.kdeplot(data=df_rarity, x="power_score", color=rarity_palette[r], label=r, ax=ax)
-
+    sns.kdeplot(data=df_rarity, x="efficiency", color=rarity_palette[r], label=r, ax=ax)
+ax.set_title("KDE Efficiency per Rarità")
 ax.legend()
+save(fig, "kde_efficiency_rarity")
 
 # mana curve
 #pool intero
@@ -114,6 +119,7 @@ for i, c in enumerate(palette):
 axes[5].set_visible(False)  # nasconde il sesto subplot vuoto
 plt.suptitle("Mana Curve per Colore — Pool Intero")
 plt.tight_layout()
+save(fig, "mana_curve_pool_intero")
 
 #solo minion
 fig, axes = plt.subplots(2, 3, figsize=(15, 8))
@@ -133,6 +139,7 @@ for i, c in enumerate(palette):
 axes[5].set_visible(False)  # nasconde il sesto subplot vuoto
 plt.suptitle("Mana Curve per Colore — Solo minions")
 plt.tight_layout()
+save(fig, "mana_curve_solo_minions")
 
 #solo spell
 fig, axes = plt.subplots(2, 3, figsize=(15, 8))
@@ -152,6 +159,7 @@ for i, c in enumerate(palette):
 axes[5].set_visible(False)  # nasconde il sesto subplot vuoto
 plt.suptitle("Mana Curve per Colore — Solo spells")
 plt.tight_layout()
+save(fig, "mana_curve_solo_spells")
 
 # scatter plot ATK - DEF
 fig, ax = plt.subplots()
@@ -166,50 +174,47 @@ sns.scatterplot(
 ax.set_title("ATK vs DEF — Minion")
 ax.set_xlabel("ATK")
 ax.set_ylabel("DEF")
+save(fig, "scatter_atk_def")
 
-# scatter plot power_score - cost_total
+# scatter plot efficiency - cost_total
 fig, ax = plt.subplots()
 sns.scatterplot(
     data=df_play,
     x="cost_total",
-    y="power_score",
+    y="efficiency",
     hue="color",
     palette=palette,
     ax=ax
 )
-ax.set_title("power_score VS cost_total — Pool intero")
+ax.set_title("Efficiency vs Cost — Pool intero")
 ax.set_xlabel("cost")
-ax.set_ylabel("power score")
-coeff = np.polyfit(df_play["cost_total"], df_play["power_score"], 2)
+ax.set_ylabel("efficiency")
+coeff = np.polyfit(df_play["cost_total"], df_play["efficiency"], 2)
 p = np.poly1d(coeff)
 xs = np.linspace(df_play["cost_total"].min(), df_play["cost_total"].max(), 20)
 ax.plot(xs, p(xs), "--", color="#ffdd55")
+save(fig, "scatter_efficiency_vs_cost")
 
 #outlier
-mad = median_abs_deviation(df_play["power_score"], scale="normal")
-med = df_play["power_score"].median()
+mad = median_abs_deviation(df_play["efficiency"], scale="normal")
+med = df_play["efficiency"].median()
 
-df_play["modified_z"] = 0.6745 * (df_play["power_score"] - med) / mad
-df_play["is_outlier"] = df_play["modified_z"].abs() > 1.5
-
-print(df_play[df_play["is_outlier"]][["name", "type_line", "color", "cost_total", "atk", "def", "power_score", "modified_z"]]
-      .sort_values("modified_z", ascending=False))
-
-#main
 if __name__ == "__main__":
-    if __name__ == "__main__":
+    df_play["modified_z"] = 0.6745 * (df_play["efficiency"] - med) / mad
+    df_play["is_outlier"] = df_play["modified_z"].abs() > 1.5
+
     # statistiche descrittive
-        print(describe_pool(df_play, ["cost_total", "power_score"], label="Pool intero"))
-        print(describe_pool(df_minions, ["atk", "def", "stat_sum", "vanilla_rate"], label="Solo Minion"))
-        print(describe_pool(df_spells, ["cost_total", "power_score"], label="Solo Spell"))
+    print(describe_pool(df_play, ["cost_total", "efficiency"], label="Pool intero"))
+    print(describe_pool(df_minions, ["atk", "def", "stat_sum", "vanilla_rate"], label="Solo Minion"))
+    print(describe_pool(df_spells, ["cost_total", "efficiency"], label="Solo Spell"))
 
-        print(describe_by_color(df_play, ["cost_total", "power_score"], label="Pool intero x colore"))
-        print(describe_by_color(df_minions, ["atk", "def", "stat_sum", "vanilla_rate"], label="Solo Minion x colore"))
-        print(describe_by_color(df_spells, ["cost_total", "power_score"], label="Solo Spell x colore"))
+    print(describe_by_color(df_play, ["cost_total", "efficiency"], label="Pool intero x colore"))
+    print(describe_by_color(df_minions, ["atk", "def", "stat_sum", "vanilla_rate"], label="Solo Minion x colore"))
+    print(describe_by_color(df_spells, ["cost_total", "efficiency"], label="Solo Spell x colore"))
 
-        # outlier
-        print(df_play[df_play["is_outlier"]][["name", "type_line", "color", "cost_total", "atk", "def", "power_score", "modified_z"]]
-            .sort_values("modified_z", ascending=False))
+    # outlier
+    print(df_play[df_play["is_outlier"]][["name", "type_line", "color", "cost_total", "atk", "def", "efficiency", "modified_z"]]
+        .sort_values("modified_z", ascending=False))
 
-        # plot
-        #plt.show()
+    # plot
+    plt.show()

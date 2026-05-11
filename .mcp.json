@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "superpowers": {
+      "command": "node",
+      "args": ["C:\\Users\\gabri\\superpowers-mcp\\build\\index.js"],
+      "env": {
+        "SUPERPOWERS_SKILLS_DIR": "C:\\Users\\gabri\\superpowers\\skills"
+      }
+    }
+  }
+}

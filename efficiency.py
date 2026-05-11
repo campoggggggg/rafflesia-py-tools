@@ -1,7 +1,7 @@
 import pandas as pd
 import math
 import re
-from load_cards import load_cards
+from database.load_cards import load_cards
 from text_normalizer import normalize_text
 
 # KEYWORD
@@ -11,6 +11,14 @@ IMPULSIVE_MULT = 1.22       #
 PROTECTOR_MULT = 1.20       #
 LIFEDRAIN_MULT = 1.1        # basso valore
 ALWAYS_SAPPED_MULT = 0.8   # contrario di aggressive / 1/1.26
+
+KEYWORDS_MULT = {
+    "stealth":       STEALTH_MULT,
+    "aggressive":    AGGRESSIVE_MULT,
+    "protector":     PROTECTOR_MULT,
+    "lifedrain":     LIFEDRAIN_MULT,
+    "impulsive":     IMPULSIVE_MULT,
+}
 
 # BASIC COST
 SPELL_CARD_VALUE = -0.0     # non ha stats, è già un malus implicito rispetto a un minion.
@@ -23,9 +31,10 @@ DISCARD_1 = -0.8            # scartare è voluto, scelgo io la carta, a volte ge
 
 DESTROY = 1.0
 
-DAMAGE_1_ALL = 0.7
+DAMAGE_1_ALL = 1.0
+DAMAGE_1_TARGET = 0.7
 
-SACRIFICE_TERRITORY = -1.5
+SACRIFICE_TERRITORY = -2.0
 # OTHER
 MEDIAN_COST = 1.0           #
 P75_MINION = 1.0            # placeholder; dopo introduci df dei minion — 75° percentile stimato
@@ -34,7 +43,7 @@ ALPHA = 1.3                 #costante di penalizzazione (costi alti sono meno ef
 df = load_cards()
 df["cost_total"] = df["cost_neutral"].fillna(0) + df["cost_color"].fillna(0)
 
-def power_score(card):
+def efficiency(card):
     cost_neutral = card["cost_neutral"] if not pd.isna(card["cost_neutral"]) else 0
     cost_color   = card["cost_color"]   if not pd.isna(card["cost_color"])   else 0
     cost         = cost_neutral + cost_color
@@ -91,47 +100,27 @@ def power_score(card):
 
     # ── KEYWORD ─────────────────────────────────────────────────
 
-    def _score_stealth_mult():
-        # stealth impedisce di essere attaccati e targettati per un turno
-        # è volatile ma permette a una carta di fare sicuramente almeno una volta l'effetto
-        if "stealth" in card["keywords_list"]:
-            if card["type_line"] == "Minion":
-                return _add("stealth", STEALTH_MULT)
-            return _add("stealth", P75_MINION * STEALTH_MULT)
-        return 1.0
+    def _score_grant_keyword_mult():
+        mult = 1.0
+        for keyword, base_mult in KEYWORDS_MULT.items():
+            if "gain" in text and keyword in text:
+                if "until end of turn" in text:
+                    base_mult *= 0.75
+                mult *= base_mult
+        return mult
+
+    def _score_keywords_mult():
+        mult = 1.0
+        for keyword, base_mult in KEYWORDS_MULT.items():
+            if keyword in card["keywords_list"]:
+                mult *= base_mult
+                _add(keyword, base_mult)
+        return mult
     
-    def _score_aggressive_mult():
-        if "aggressive" in card["keywords_list"]:
-            if card["type_line"] == "Minion":
-                return _add("aggressive", AGGRESSIVE_MULT)
-            return _add("aggressive", P75_MINION * AGGRESSIVE_MULT)
-        return 1.0  # non _add, non serve tracciare i neutri
-
-    def _score_impulsive_mult():
-        if "impulsive" in card["keywords_list"]:
-            if card["type_line"] == "Minion":
-                return _add("impulsive", IMPULSIVE_MULT)
-            return _add("impulsive", P75_MINION * IMPULSIVE_MULT)
-        return 1.0
-
-    def _score_lifedrain_mult():
-        if "lifedrain" in card["keywords_list"]:
-            if card["type_line"] == "Minion":
-                return _add("lifedrain", LIFEDRAIN_MULT)
-            return _add("lifedrain", P75_MINION * LIFEDRAIN_MULT)
-        return 1.0
-
     def _score_always_sapped_mult():
-        if "always sapped" in card["keywords_list"]:
-            if card["type_line"] == "Minion":
-                return _add("always_sapped", ALWAYS_SAPPED_MULT)
-        return 1.0
-
-    def _score_protector_mult():
-        if "protector" in card["keywords_list"]:
-            if card["type_line"] == "Minion":
-                return _add("protector", PROTECTOR_MULT)
-            return _add("protector", P75_MINION * PROTECTOR_MULT)
+        if "always sapped" in text:
+            _add("always_sapped", ALWAYS_SAPPED_MULT)
+            return ALWAYS_SAPPED_MULT
         return 1.0
 
     # ── BOUNCE ──────────────────────────────────────────────────
@@ -153,19 +142,14 @@ def power_score(card):
         return _add("bounce", score)
 
     # ── DISCARD ─────────────────────────────────────────────────
-    #riaggiusta da qui. occhio al return. una carta che dice scarta una carta poi scarta una carta all'avversario come la gestisci?
     def _score_discard():
         score = 0
 
         if "banish up to 1 card among those revealed" in text: # bound by darkness
-            score += 3.5
+            score += 3.5 #discard 1 -> 1.5; SCELTA ->+ 0.5 -> guarda mano 0.75; banish invece di discard -> 0.75
             return _add("discard_opp", score)
-        
-        if "target opponent" in text and "discard" in text:
-            match = re.search(r"discard (\d+)", text)
-            x = int(match.group(1)) if match else 1
-            score += math.log(1 + x) * 0.8
-            return _add("discard_opp", score)
+
+        #non ci sono effetti che scartano all'avversario attualmente
 
         # discard your hand — malus pesante
         if "discard your hand" in text:
@@ -184,23 +168,17 @@ def power_score(card):
 
     def _score_negate():
         score = 0
-
-        if "negate" not in text:
-            return _add("negate", 0)
         
         # negate semplice — massimo valore
-
         if "negate target card." in text:
-            score = 2.0
+            score = 2.5 #parto da counterspell in mgt ma mi sembra broken. forse meglio 2.5?
 
             match = re.search(r"cost of (\d) or less", text)
             if match:
                 x = int(match.group(1))
-                score *= x/8
+                score *= (x + 2) / 8 # solo x/8 mi sembrava troppo punitivo
             if "equal to" in text:
-                score *= 0.25
-            if "additional cost" in text:
-                score *= 0.8
+                score *= 0.3
             if "discard" in text:
                 score *= 0.5
             return _add("negate", score)
@@ -211,9 +189,6 @@ def power_score(card):
 
     def _score_sacrifice():
         score = 0
-
-        if "sacrifice" not in text:
-            return _add("sacrifice", 0)
 
         if "sacrifice this" in text:
             return _add("sacrifice", -_score_stats())
@@ -231,35 +206,33 @@ def power_score(card):
 
         # destroy alleato — malus o costo
         if "destroy target friendly" in text:
-            score += 0.5
+            score += -1.0
 
         if "destroy all friendly" in text:
-            score += 1.0
+            score += -2.5
 
         # destroy face-down — rimuove set cards, valore medio
         if "destroy target enemy face-down" in text:
-            score += DESTROY / 3
+            score += 0.8
 
         if "destroy target face-down" in text:
-            score += (DESTROY + DESTROY * 0.1) / 3
+            score += 1.0
 
         # destroy territory — rimuove risorsa avversaria
         if "destroy target enemy card" in text:
-            score += DESTROY + DESTROY * 0.5
+            score += 2.0
 
         # destroy minion avversario — valore alto
         if "destroy target minion" in text:
-            score += (DESTROY + DESTROY*0.1)
-        if "destro target enemy minion" in text:
-            score += DESTROY
+            score += 1.6
+        if "destroy target enemy minion" in text:
+            score += 1.5
 
         # destroy all — board wipe, valore molto alto ma simmetrico
         if "destroy all" in text:
-            score += (DESTROY + DESTROY*1.5)
+            score += 3.0
 
         return _add("destroy", score)
-
-############### CONTROLLATO FINO A QUI ################
 
     # ── DEAL DAMAGE ─────────────────────────────────────────────
 
@@ -269,25 +242,25 @@ def power_score(card):
         match = re.search(r"deal (\d+) damage to all enemies", text)
         if match:
             x = int(match.group(1))
-            score += (DAMAGE_1_ALL * DAMAGE_1_ALL * 0.5) * x
+            score += (DAMAGE_1_ALL * 1.5) * x
             return _add("deal_damage_all_enemies", score)
 
         match = re.search(r"deal (\d+) damage to all minions", text)
         if match:
             x = int(match.group(1))
-            score += (DAMAGE_1_ALL - DAMAGE_1_ALL * 0.3) * x
+            score += (DAMAGE_1_ALL) * x
             return _add("deal_damage_all_minions", score)
 
         match = re.search(r"deal (\d+) damage to target opponent", text)
         if match:
             x = int(match.group(1))
-            score += (DAMAGE_1_ALL - DAMAGE_1_ALL * 0.3) * x
+            score += (DAMAGE_1_TARGET * 0.5) * x
             return _add("deal_damage_player", score)
 
         match = re.search(r"deal (\d+) damage to target", text)
         if match:
             x = int(match.group(1))
-            score += DAMAGE_1_ALL * x
+            score += DAMAGE_1_TARGET * x
             return _add("deal_damage_target", score)
 
         return _add("deal_damage", 0)
@@ -297,7 +270,7 @@ def power_score(card):
     def _score_must_attack():
         # limitazione — non puoi scegliere quando attaccare
         if "must attack if able" in text:
-            return _add("must_attack", -0.2)
+            return _add("must_attack", -0.3)
         return _add("must_attack", 0)
 
     # ── SUMMON FROM GRAVE ───────────────────────────────────────
@@ -307,11 +280,11 @@ def power_score(card):
 
         # summon territory dal cimitero — ramp/recupero
         if "summon" in text and "territory" in text and "grave" in text:
-            score += 1.0
+            score += 1.5
 
         # summon minion dal cimitero — reanimator, valore alto
         if "summon" in text and "minion" in text and "grave" in text:
-            score += 1.0
+            score += 2.5
         
         return _add("summon_from_grave", score)
 
@@ -331,21 +304,21 @@ def power_score(card):
 
         # costa N meno per ogni carta al cimitero — scala in lategame
         if "costs" in text and "less for each" in text and "grave" in text:
-            score += 1.2
+            score += 3.5
 
         # costa N meno per ogni minion friendly — scala con board
         if "costs" in text and "less for each" in text and "minion" in text:
-            score += 0.9
+            score += 3.0
 
         # costa N meno fisso — semplice sconto
         match = re.search(r"costs? (\d+) less", text)
         if match and "each" not in text:
             x = int(match.group(1))
-            score += x * 0.3
+            score += x * 0.8
 
         # costo alternativo — sacrifica invece di pagare mana
         if "instead of paying" in text:
-            score += 0.8
+            score += 2.0
 
         return _add("mana_discount", score)
 
@@ -475,17 +448,22 @@ def power_score(card):
         match = re.search(r"gain (\d+) mana", text)
         if match:
             x = int(match.group(1))
-            return _add("gain_mana", x * 0.5)
+            return _add("gain_mana", x)
         return _add("gain_mana", 0)
+    
+    #── Legendary debuff ─────────────────────────────────────────
+    def _score_leg_debuff(): #come mult
+        rarity = card["rarity"] if not pd.isna(card["rarity"]) else ""
+        if "legendary" in rarity.lower():
+            return _add("legendary_debuff", 0.8)
+        return 1.0
 
     # ── SOMMA TOTALE ────────────────────────────────────────────
-    acc = 1 / (1 + math.exp(cost - MEDIAN_COST))
 
     base_sum = (
         _score_stats()
         + _spell_card_cost()
-        + acc * (
-            _score_draw()
+        + _score_draw()
         + _score_bounce()
         + _score_discard()
         + _score_negate()
@@ -506,18 +484,14 @@ def power_score(card):
         + _score_pump()
         + _score_mill()
         + _score_gain_mana()
-        )
     )
 
     total = (
         base_sum 
-        * _score_stealth_mult()
-        * _score_aggressive_mult()
-        * _score_protector_mult()
-        * _score_impulsive_mult()
-        * _score_lifedrain_mult()
-        *_score_always_sapped_mult()
-
+        * _score_grant_keyword_mult()
+        * _score_keywords_mult()
+        * _score_always_sapped_mult()
+        * _score_leg_debuff()
     )
 
     return total / (cost + 1) , contributions # se vuoi valutare carte costose di meno fai ** ALPHA
@@ -535,27 +509,27 @@ atk_mean_per_cost = (
     .to_dict()
 )
 df_minions["ps_temp"] = df_minions.apply(
-    lambda c: power_score(c)[0], axis=1
+    lambda c: efficiency(c)[0], axis=1
 )
 P75_MINION = df_minions["ps_temp"].quantile(0.75)
 # END PASS 1
 
 if __name__ == "__main__":
-    df[["power_score", "contributions"]] = df.apply(
-        lambda card: pd.Series(power_score(card)), axis=1
+    df[["efficiency", "contributions"]] = df.apply(
+        lambda card: pd.Series(efficiency(card)), axis=1
     )
-    
-    print(f"μ power_score:    {df['power_score'].mean():.3f}")
-    print(f"σ power_score: {df['power_score'].var():.3f}")
 
-    top = (df[["name", "type_line", "color", "cost_total", "atk", "def", "power_score", "contributions"]]
-           .sort_values("power_score", ascending=False)
+    print(f"μ efficiency:    {df['efficiency'].mean():.3f}")
+    print(f"σ efficiency: {df['efficiency'].var():.3f}")
+
+    top = (df[["name", "type_line", "color", "cost_total", "atk", "def", "efficiency", "contributions"]]
+           .sort_values("efficiency", ascending=False)
            .head(20) # top 20 carte
            )
     print()
-    print(top[["name", "type_line", "color", "cost_total", "atk", "def", "power_score"]])
+    print(top[["name", "type_line", "color", "cost_total", "atk", "def", "efficiency"]])
     print()
-    
+
     for _, row in top.iterrows():
         nonzero = {k: v for k, v in row["contributions"].items() if v != 0}
         print(f"{row['name']}: {nonzero}")
