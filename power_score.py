@@ -5,18 +5,18 @@ from load_cards import load_cards
 from text_normalizer import normalize_text
 
 # KEYWORD
-STEALTH_MULT = 1.58         # log(1 + 1)/log(1 + 2) cioe garantire un'attivazione e/o attacco 
-AGGRESSIVE_MULT = 1.26      # 
-IMPULSIVE_MULT = 1.32       # 
-PROTECTOR_MULT = 1.29       #
+STEALTH_MULT = 1.33         # 
+AGGRESSIVE_MULT = 1.20      # 
+IMPULSIVE_MULT = 1.22       # 
+PROTECTOR_MULT = 1.20       #
 LIFEDRAIN_MULT = 1.1        # basso valore
-ALWAYS_SAPPED_MULT = 0.79   # contrario di aggressive / 1/1.26
+ALWAYS_SAPPED_MULT = 0.8   # contrario di aggressive / 1/1.26
 
 # BASIC COST
-SPELL_CARD_VALUE = -1.0
+SPELL_CARD_VALUE = -0.0     # non ha stats, è già un malus implicito rispetto a un minion.
 
 BOUNCE_ENEMY = +1.0
-BOUNCE_ALLY = -0.5
+BOUNCE_ALLY = -0.2          #scelta attiva e ricercata, non malus puro ma calibrato. leva stat da terra comunque, quindi leggermente negativo
 
 DISCARD_ALL = -2.5          # DA CAPIRE
 DISCARD_1 = -0.8            # scartare è voluto, scelgo io la carta, a volte genera risorse a volte toglie roba brutta
@@ -57,7 +57,11 @@ def power_score(card):
         if card["type_line"] == "Minion":
             atk = card["atk"] if not pd.isna(card["atk"]) else 0
             def_ = card["def"] if not pd.isna(card["def"]) else 0
-            return _add("stats", atk + def_)
+            total = atk + def_
+            if atk == 0:
+                atk = 1
+            balance = 1 - abs(atk - def_) / total
+            return _add("stats", total * (balance ** 0.5))
         return _add("stats", 0)
 
     def _spell_card_cost():
@@ -69,19 +73,19 @@ def power_score(card):
     # ── DRAW E TOPDECK ──────────────────────────────────────────
 
     def _score_draw():
-        # caso 1: draw X e rimetti Y in cima — filtraggio
-        # ln(1+x) / sqrt(1+y/2) cattura il valore netto del filtraggio
         match = re.search(r"draw (\d+).*move (\d+).*top", text)
         if match:
-            x = int(match.group(1))
-            y = int(match.group(2))
-            return _add("draw_topdeck", math.log(1 + x) / math.sqrt(1 + y / 2))
+            x, y = int(match.group(1)), int(match.group(2))
+            netto = x - y
+            bonus = math.log(1 + y) * (x / (x + y))
+            offset = 0 if card["type_line"] == "Minion" else -1.0
+            return _add("draw_topdeck", 1.5 * netto + bonus + offset)
 
         # caso 2: solo draw X
         match = re.search(r"draw (\d+)", text)
         if match:
             x = int(match.group(1))
-            return _add("draw", math.log(1 + x))
+            return _add("draw", 1.5 * x)
 
         return _add("draw", 0)
 
@@ -90,42 +94,44 @@ def power_score(card):
     def _score_stealth_mult():
         # stealth impedisce di essere attaccati e targettati per un turno
         # è volatile ma permette a una carta di fare sicuramente almeno una volta l'effetto
-        if "stealth" not in text:
-            return 1.0
-        if card["type_line"] == "Minion":
-            return _add("stealth", STEALTH_MULT)
-        return _add("stealth", P75_MINION * STEALTH_MULT)
-
+        if "stealth" in card["keywords_list"]:
+            if card["type_line"] == "Minion":
+                return _add("stealth", STEALTH_MULT)
+            return _add("stealth", P75_MINION * STEALTH_MULT)
+        return 1.0
+    
     def _score_aggressive_mult():
-        if "aggressive" in text:
-            return _add("aggressive", AGGRESSIVE_MULT)
+        if "aggressive" in card["keywords_list"]:
+            if card["type_line"] == "Minion":
+                return _add("aggressive", AGGRESSIVE_MULT)
+            return _add("aggressive", P75_MINION * AGGRESSIVE_MULT)
         return 1.0  # non _add, non serve tracciare i neutri
 
     def _score_impulsive_mult():
-        if "impulsive" in text:
-            return _add("impulsive", IMPULSIVE_MULT)
+        if "impulsive" in card["keywords_list"]:
+            if card["type_line"] == "Minion":
+                return _add("impulsive", IMPULSIVE_MULT)
+            return _add("impulsive", P75_MINION * IMPULSIVE_MULT)
         return 1.0
 
     def _score_lifedrain_mult():
-        if "lifedrain" in text:
-            return _add("lifedrain", LIFEDRAIN_MULT)
+        if "lifedrain" in card["keywords_list"]:
+            if card["type_line"] == "Minion":
+                return _add("lifedrain", LIFEDRAIN_MULT)
+            return _add("lifedrain", P75_MINION * LIFEDRAIN_MULT)
         return 1.0
 
     def _score_always_sapped_mult():
-        if "always sapped" in text:
-            return _add("always_sapped", ALWAYS_SAPPED_MULT)
+        if "always sapped" in card["keywords_list"]:
+            if card["type_line"] == "Minion":
+                return _add("always_sapped", ALWAYS_SAPPED_MULT)
         return 1.0
 
     def _score_protector_mult():
-        if "protector" in text:
-            #check per vedere se un protector è understats per il suo costo
-            atk_ref = atk_mean_per_cost[cost]
-            def_ = card["def"] if not pd.isna(card["def"]) else 0
-            ratio = def_ / atk_ref
-            prt_mult = math.log(1 + ratio) / math.log(2)
-            if prt_mult <= 1.0:
-                print(f"[PROTECTOR WARNING] {card['name']} — prt_mult={prt_mult:.3f} (DEF={def_}, ATK_medio={atk_ref:.2f}, cost={cost})") # check in caso di mult <= 1.0
-            return _add("protector", PROTECTOR_MULT)
+        if "protector" in card["keywords_list"]:
+            if card["type_line"] == "Minion":
+                return _add("protector", PROTECTOR_MULT)
+            return _add("protector", P75_MINION * PROTECTOR_MULT)
         return 1.0
 
     # ── BOUNCE ──────────────────────────────────────────────────
@@ -136,20 +142,25 @@ def power_score(card):
         score = 0
 
         if "move target enemy" in text:
-            # genera tempo sull'avversario
             score += BOUNCE_ENEMY
         if "move friendly minion" in text:
-            # bounce alleato — contestuale, di base perde tempo ma crea nuove giocate
             score += BOUNCE_ALLY
+        if "move all friendly minion" in text:
+            score += BOUNCE_ALLY * 3.0 # creature medie in campo a mid game
+        if "move all target enemy" in text:
+            score += BOUNCE_ENEMY * 3.0 # creature medie in campo a mid game
 
         return _add("bounce", score)
 
     # ── DISCARD ─────────────────────────────────────────────────
-
+    #riaggiusta da qui. occhio al return. una carta che dice scarta una carta poi scarta una carta all'avversario come la gestisci?
     def _score_discard():
         score = 0
 
-        # discard avversario — valore positivo, rimuove risorse
+        if "banish up to 1 card among those revealed" in text: # bound by darkness
+            score += 3.5
+            return _add("discard_opp", score)
+        
         if "target opponent" in text and "discard" in text:
             match = re.search(r"discard (\d+)", text)
             x = int(match.group(1)) if match else 1
@@ -509,7 +520,7 @@ def power_score(card):
 
     )
 
-    return total / (cost + 1) ** ALPHA, contributions
+    return total / (cost + 1) , contributions # se vuoi valutare carte costose di meno fai ** ALPHA
 
 # PASS 1
 MEDIAN_COST = df["cost_total"].median()
@@ -539,7 +550,8 @@ if __name__ == "__main__":
 
     top = (df[["name", "type_line", "color", "cost_total", "atk", "def", "power_score", "contributions"]]
            .sort_values("power_score", ascending=False)
-           .head(30))
+           .head(20) # top 20 carte
+           )
     print()
     print(top[["name", "type_line", "color", "cost_total", "atk", "def", "power_score"]])
     print()

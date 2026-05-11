@@ -48,10 +48,10 @@ def normalize_text(raw: str) -> str:
     # move friendly minion
     # move target enemy
     t = t.replace("return that summoned", "move friendly minion")
-    t = t.replace("return those summoned", "move friendly minion")
+    t = t.replace("return those summoned", "move all friendly minion")
     t = t.replace("move this and that attacked minion to the hand", "move friendly minion, move target enemy") # mole
     t = t.replace("move target minion from your field", "move friendly minion")
-    t = t.replace("move all other minions from the field to the hand", "move friendly minion, move target enemy") # rau
+    t = t.replace("move all other minions from the field to the hand", "move all friendly minion, move all target enemy") # rau
 
     # sinonimi draw
     t = t.replace("move it to your hand", "draw 1")
@@ -80,7 +80,7 @@ def normalize_text(raw: str) -> str:
     # "to a randomly chosen enemy" → tratta come "target enemy" per lo scoring
     t = re.sub(r"deal (\d+) damage to a randomly chosen enemy", r"deal \1 damage to target enemy", t)
     t = t.replace("deal X damage", "deal 3 damage") # placeholder, da pensarci
-    
+
     # ── SUMMON FROM GRAVE ────────────────────────────────────────
     t = re.sub(
         r"summon a minion with a cost of (\d+) from your grave",
