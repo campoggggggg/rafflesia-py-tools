@@ -2,14 +2,31 @@ import pandas as pd
 import math
 import re
 from load_cards import load_cards
+from text_normalizer import normalize_text
 
+# KEYWORD
 STEALTH_MULT = 1.58         # log(1 + 1)/log(1 + 2) cioe garantire un'attivazione e/o attacco 
 AGGRESSIVE_MULT = 1.26      # 
 IMPULSIVE_MULT = 1.32       # 
-PROTECTOR_MULT = 1.0        # activations_protector = DEF_minion / ATK_medio[costo_minion] || mult_protector = log(1 + activations_protector) / log(2)
+PROTECTOR_MULT = 1.29       #
 LIFEDRAIN_MULT = 1.1        # basso valore
 ALWAYS_SAPPED_MULT = 0.79   # contrario di aggressive / 1/1.26
 
+# BASIC COST
+SPELL_CARD_VALUE = -1.0
+
+BOUNCE_ENEMY = +1.0
+BOUNCE_ALLY = -0.5
+
+DISCARD_ALL = -2.5          # DA CAPIRE
+DISCARD_1 = -0.8            # scartare è voluto, scelgo io la carta, a volte genera risorse a volte toglie roba brutta
+
+DESTROY = 1.0
+
+DAMAGE_1_ALL = 0.7
+
+SACRIFICE_TERRITORY = -1.5
+# OTHER
 MEDIAN_COST = 1.0           #
 P75_MINION = 1.0            # placeholder; dopo introduci df dei minion — 75° percentile stimato
 ALPHA = 1.3                 #costante di penalizzazione (costi alti sono meno efficienti, toglie linearità dalla scala)
@@ -22,7 +39,7 @@ def power_score(card):
     cost_color   = card["cost_color"]   if not pd.isna(card["cost_color"])   else 0
     cost         = cost_neutral + cost_color
     color        = card["color"].lower() if not pd.isna(card["color"]) else "colorless"
-    text         = card["card_text"].lower() if not pd.isna(card["card_text"]) else ""
+    text         = normalize_text(card["card_text"]) if not pd.isna(card["card_text"]) else ""
     
     # dizionario che traccia il contributo di ogni effetto
     contributions = {}
@@ -35,7 +52,8 @@ def power_score(card):
 
     # ── STATISTICHE BASE ────────────────────────────────────────
 
-    def _score_stats():
+    # se minion, ritorna atk+def. poi verrà diviso per (costo + 1)^alpha
+    def _score_stats(): 
         if card["type_line"] == "Minion":
             atk = card["atk"] if not pd.isna(card["atk"]) else 0
             def_ = card["def"] if not pd.isna(card["def"]) else 0
@@ -45,7 +63,7 @@ def power_score(card):
     def _spell_card_cost():
         # giocare una spell costa una carta dalla mano — card disadvantage implicito
         if card["type_line"] == "Spell":
-            return _add("spell_card_cost", -1)
+            return _add("spell_card_cost", SPELL_CARD_VALUE)
         return _add("spell_card_cost", 0)
 
     # ── DRAW E TOPDECK ──────────────────────────────────────────
@@ -89,7 +107,7 @@ def power_score(card):
         return 1.0
 
     def _score_lifedrain_mult():
-        if "lifedrain" in text or "life-drain" in text:
+        if "lifedrain" in text:
             return _add("lifedrain", LIFEDRAIN_MULT)
         return 1.0
 
@@ -100,6 +118,13 @@ def power_score(card):
 
     def _score_protector_mult():
         if "protector" in text:
+            #check per vedere se un protector è understats per il suo costo
+            atk_ref = atk_mean_per_cost[cost]
+            def_ = card["def"] if not pd.isna(card["def"]) else 0
+            ratio = def_ / atk_ref
+            prt_mult = math.log(1 + ratio) / math.log(2)
+            if prt_mult <= 1.0:
+                print(f"[PROTECTOR WARNING] {card['name']} — prt_mult={prt_mult:.3f} (DEF={def_}, ATK_medio={atk_ref:.2f}, cost={cost})") # check in caso di mult <= 1.0
             return _add("protector", PROTECTOR_MULT)
         return 1.0
 
@@ -110,12 +135,12 @@ def power_score(card):
         # bounce alleato — può essere un costo o un vantaggio (rigioca ETB)
         score = 0
 
-        if "move target enemy" in text and "hand" in text:
+        if "move target enemy" in text:
             # genera tempo sull'avversario
-            score += 0.8
-        if "move target minion" in text and "your hand" in text:
+            score += BOUNCE_ENEMY
+        if "move friendly minion" in text:
             # bounce alleato — contestuale, di base perde tempo ma crea nuove giocate
-            score -= 0.2
+            score += BOUNCE_ALLY
 
         return _add("bounce", score)
 
@@ -133,13 +158,13 @@ def power_score(card):
 
         # discard your hand — malus pesante
         if "discard your hand" in text:
-            return _add("discard_self_hand", -2.0)
+            return _add("discard_self_hand", DISCARD_ALL)
 
         # discard X dalla propria mano — malus scalabile
         match = re.search(r"discard (\d+)", text)
         if match:
             x = int(match.group(1))
-            score -= x * 0.8 # scartare è voluto, scelgo io la carta, a volte genera risorse a volte toglie roba brutta
+            score += x * DISCARD_1 
             return _add("discard_self", score)
 
         return _add("discard", 0)
@@ -154,7 +179,7 @@ def power_score(card):
         
         # negate semplice — massimo valore
 
-        if "negate target card.":
+        if "negate target card." in text:
             score = 2.0
 
             match = re.search(r"cost of (\d) or less", text)
@@ -169,6 +194,8 @@ def power_score(card):
                 score *= 0.5
             return _add("negate", score)
 
+        return _add("negate", 0)
+
     # ── SACRIFICE ─────────────────────────────────────────────────
 
     def _score_sacrifice():
@@ -176,79 +203,81 @@ def power_score(card):
 
         if "sacrifice" not in text:
             return _add("sacrifice", 0)
-        
+
         if "sacrifice this" in text:
             return _add("sacrifice", -_score_stats())
-        
-        match = re.search(r"sacrifice (\d) territory", text)
-        if match:
-            x = int(match.group(1))
-            score += -x * 1.4
 
-        match = re.search(r"sacrifice (\d) minion", text)
+        match = re.search(r"sacrifice (\d+) territory card", text)
         if match:
             x = int(match.group(1))
-            score += -x * 1.4
+            score += x * SACRIFICE_TERRITORY
+
         return _add("sacrifice", score)
-###### CONTROLLATO FINO A QUI ######
-
     # ── DESTROY ─────────────────────────────────────────────────
 
     def _score_destroy():
         score = 0
 
         # destroy alleato — malus o costo
-        if "destroy target friendly" in text or "destroy all friendly" in text:
-            score -= 0.5
-
-        # destroy face-down — rimuove set cards, valore medio
-        if "destroy target enemy face-down" in text or "face-down" in text:
+        if "destroy target friendly" in text:
             score += 0.5
 
-        # destroy territory — rimuove risorsa avversaria
-        if "destroy target" in text and "territory" in text and "friendly" not in text:
-            score += 0.6
-
-        # destroy minion avversario — valore alto
-        if "destroy target" in text and ("minion" in text or "enemy" in text) and "friendly" not in text:
+        if "destroy all friendly" in text:
             score += 1.0
 
+        # destroy face-down — rimuove set cards, valore medio
+        if "destroy target enemy face-down" in text:
+            score += DESTROY / 3
+
+        if "destroy target face-down" in text:
+            score += (DESTROY + DESTROY * 0.1) / 3
+
+        # destroy territory — rimuove risorsa avversaria
+        if "destroy target enemy card" in text:
+            score += DESTROY + DESTROY * 0.5
+
+        # destroy minion avversario — valore alto
+        if "destroy target minion" in text:
+            score += (DESTROY + DESTROY*0.1)
+        if "destro target enemy minion" in text:
+            score += DESTROY
+
         # destroy all — board wipe, valore molto alto ma simmetrico
-        if "destroy all" in text and "friendly" not in text:
-            score += 1.5
+        if "destroy all" in text:
+            score += (DESTROY + DESTROY*1.5)
 
         return _add("destroy", score)
+
+############### CONTROLLATO FINO A QUI ################
 
     # ── DEAL DAMAGE ─────────────────────────────────────────────
 
     def _score_deal_damage():
         score = 0
 
-        # deal X damage to all — valore alto, colpisce tutto
-        if re.search(r"deal \d+ damage to all", text):
-            match = re.search(r"deal (\d+) damage to all", text)
-            x = int(match.group(1)) if match else 1
-            score += math.log(1 + x) * 1.2
-            return _add("deal_damage_all", score)
+        match = re.search(r"deal (\d+) damage to all enemies", text)
+        if match:
+            x = int(match.group(1))
+            score += (DAMAGE_1_ALL * DAMAGE_1_ALL * 0.5) * x
+            return _add("deal_damage_all_enemies", score)
 
-        # deal X damage to target minion or player — flessibile, vale di piu
-        if "minion or player" in text or "enemy" in text and "damage" in text:
-            match = re.search(r"deal (\d+) damage", text)
-            x = int(match.group(1)) if match else 1
-            score += math.log(1 + x) * 1.0
-            return _add("deal_damage_flexible", score)
+        match = re.search(r"deal (\d+) damage to all minions", text)
+        if match:
+            x = int(match.group(1))
+            score += (DAMAGE_1_ALL - DAMAGE_1_ALL * 0.3) * x
+            return _add("deal_damage_all_minions", score)
 
-        # deal X damage to target minion — solo minion
-        if "damage to target minion" in text:
-            match = re.search(r"deal (\d+) damage", text)
-            x = int(match.group(1)) if match else 1
-            score += math.log(1 + x) * 0.8
-            return _add("deal_damage_minion", score)
+        match = re.search(r"deal (\d+) damage to target opponent", text)
+        if match:
+            x = int(match.group(1))
+            score += (DAMAGE_1_ALL - DAMAGE_1_ALL * 0.3) * x
+            return _add("deal_damage_player", score)
 
-        # deal X damage variabile (es. "deal X damage where X is...")
-        if "deal" in text and "damage" in text:
-            score += 0.5
-            return _add("deal_damage_variable", score)
+        match = re.search(r"deal (\d+) damage to target", text)
+        if match:
+            x = int(match.group(1))
+            score += DAMAGE_1_ALL * x
+            return _add("deal_damage_target", score)
 
         return _add("deal_damage", 0)
 
@@ -257,7 +286,7 @@ def power_score(card):
     def _score_must_attack():
         # limitazione — non puoi scegliere quando attaccare
         if "must attack if able" in text:
-            return _add("must_attack", -0.4)
+            return _add("must_attack", -0.2)
         return _add("must_attack", 0)
 
     # ── SUMMON FROM GRAVE ───────────────────────────────────────
@@ -267,18 +296,12 @@ def power_score(card):
 
         # summon territory dal cimitero — ramp/recupero
         if "summon" in text and "territory" in text and "grave" in text:
-            score += 0.6
+            score += 1.0
 
         # summon minion dal cimitero — reanimator, valore alto
         if "summon" in text and "minion" in text and "grave" in text:
-            match = re.search(r"cost of (\d+) or less", text)
-            if match:
-                cap = int(match.group(1))
-                # piu alto il cap, piu forte
-                score += math.log(1 + cap) * 0.5
-            else:
-                score += 1.0
-
+            score += 1.0
+        
         return _add("summon_from_grave", score)
 
     # ── ATTACH ──────────────────────────────────────────────────
@@ -287,7 +310,7 @@ def power_score(card):
         # attach aggiunge carte a un minion per effetti bonus
         # valore dipende dal contesto, per ora fisso
         if "attach" in text:
-            return _add("attach", 0.4)
+            return _add("attach", 0) # decidere contesto e logica
         return _add("attach", 0)
 
     # ── MANA DISCOUNT ───────────────────────────────────────────
@@ -297,11 +320,11 @@ def power_score(card):
 
         # costa N meno per ogni carta al cimitero — scala in lategame
         if "costs" in text and "less for each" in text and "grave" in text:
-            score += 0.8
+            score += 1.2
 
         # costa N meno per ogni minion friendly — scala con board
         if "costs" in text and "less for each" in text and "minion" in text:
-            score += 0.7
+            score += 0.9
 
         # costa N meno fisso — semplice sconto
         match = re.search(r"costs? (\d+) less", text)
@@ -311,7 +334,7 @@ def power_score(card):
 
         # costo alternativo — sacrifica invece di pagare mana
         if "instead of paying" in text:
-            score += 0.3
+            score += 0.8
 
         return _add("mana_discount", score)
 
@@ -342,13 +365,12 @@ def power_score(card):
         return _add("reveal_draw", 0)
 
     # ── RAMP ────────────────────────────────────────────────────
-
+    # ogni mana normalizzato a un generico (M)
     def _score_ramp():
-        # gain mana color — accelerazione risorse, molto forte
-        match = re.search(r"gain \(([BGRUC]+)\)", text)
+        match = re.search(r"gain (\(M\))+", text)
         if match:
-            x = len(match.group(1))  # numero di simboli mana guadagnati
-            return _add("ramp", x * 0.7)
+            n = len(re.findall(r"\(M\)", match.group(0)))
+            return _add("ramp", n * 0.7)
         return _add("ramp", 0)
 
     # ── RECYCLE ─────────────────────────────────────────────────
@@ -380,35 +402,46 @@ def power_score(card):
 
         # sap all enemy — molto forte
         if "sap all enemy" in text:
-            score += 1.2
+            score += 0.8
 
         # sap target enemy — rimuove attacco temporaneamente
         if "sap target enemy" in text or "sap target minion" in text:
-            score += 0.6
+            score += 0.4
 
         # sap self — costo o limitazione
         if "sap this" in text:
-            score -= 0.3
+            score += -0.3
 
         return _add("sap", score)
 
     # ── PUMP (+X/+Y) ────────────────────────────────────────────
 
     def _score_pump():
-        # +X/+Y a un minion — valore scalabile
-        match = re.search(r"\+(\d+)/\+(\d+)", text)
+        score = 0
+
+        # pump positivo su friendly — +X/+Y
+        match = re.search(r"gains? \+(\d+)/\+(\d+)", text)
         if match:
             x = int(match.group(1))
             y = int(match.group(2))
-            return _add("pump", (x + y) * 0.3)
+            base = (x + y)
+            if "until the end of" not in text:
+                score += base
+            else:
+                score += base * 0.5
 
-        # +X/+0 o +0/+Y — pump parziale
-        match = re.search(r"\+(\d+)/\+0|\+0/\+(\d+)", text)
+        # debuff negativo su enemy — -X/-Y (stesso valore, è rimozione parziale)
+        match = re.search(r"gains? -(\d+)/-(\d+)", text)
         if match:
-            val = int(match.group(1) or match.group(2))
-            return _add("pump_partial", val * 0.2)
+            x = int(match.group(1))
+            y = int(match.group(2))
+            base = (x + y)
+            if "until the end of" not in text:
+                score += base
+            else:
+                score += base * 0.5
 
-        return _add("pump", 0)
+        return _add("pump", score)
 
     # ── MILL ────────────────────────────────────────────────────
 
@@ -433,14 +466,6 @@ def power_score(card):
             x = int(match.group(1))
             return _add("gain_mana", x * 0.5)
         return _add("gain_mana", 0)
-
-    # ── MINION TO BOTDECK ───────────────────────────────────────
-
-    def _score_minion_to_botdeck():
-        # manda minion avversario in fondo al mazzo — rimozione soft
-        if ("bottom" in text or "botdeck" in text) and "deck" in text and "enemy" in text:
-            return _add("minion_to_botdeck", 0.7)
-        return _add("minion_to_botdeck", 0)
 
     # ── SOMMA TOTALE ────────────────────────────────────────────
     acc = 1 / (1 + math.exp(cost - MEDIAN_COST))
@@ -470,7 +495,6 @@ def power_score(card):
         + _score_pump()
         + _score_mill()
         + _score_gain_mana()
-        + _score_minion_to_botdeck()
         )
     )
 
@@ -487,18 +511,41 @@ def power_score(card):
 
     return total / (cost + 1) ** ALPHA, contributions
 
+# PASS 1
 MEDIAN_COST = df["cost_total"].median()
 
 df_minions = df[df["type_line"] == "Minion"].copy()
+
+atk_mean_per_cost = (
+    df_minions
+    .groupby("cost_total")["atk"]
+    .mean()
+    .fillna(1.0) # caso limite in cui un costo ha solo minion senza atk
+    .to_dict()
+)
 df_minions["ps_temp"] = df_minions.apply(
     lambda c: power_score(c)[0], axis=1
 )
 P75_MINION = df_minions["ps_temp"].quantile(0.75)
+# END PASS 1
 
 if __name__ == "__main__":
     df[["power_score", "contributions"]] = df.apply(
         lambda card: pd.Series(power_score(card)), axis=1
     )
-    print(df[["name", "type_line", "color", "cost_neutral", "cost_color", "atk", "def", "power_score"]]
-          .sort_values("power_score", ascending=False)
-          .head(30))
+    
+    print(f"μ power_score:    {df['power_score'].mean():.3f}")
+    print(f"σ power_score: {df['power_score'].var():.3f}")
+
+    top = (df[["name", "type_line", "color", "cost_total", "atk", "def", "power_score", "contributions"]]
+           .sort_values("power_score", ascending=False)
+           .head(30))
+    print()
+    print(top[["name", "type_line", "color", "cost_total", "atk", "def", "power_score"]])
+    print()
+    
+    for _, row in top.iterrows():
+        nonzero = {k: v for k, v in row["contributions"].items() if v != 0}
+        print(f"{row['name']}: {nonzero}")
+
+    

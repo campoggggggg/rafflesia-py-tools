@@ -42,6 +42,14 @@ Ragionamento: `ALWAYS_SAPPED_MULT = 0.79 = 1/1.26`. È l'inverso di aggressive: 
 Valore stimato: moltiplicatore `×1.1` sullo score base
 Ragionamento: `LIFEDRAIN_MULT = 1.1`. Recupero vita basso valore — guadagnare vita non incide direttamente sullo stato del campo. Il buff è minimo rispetto ad aggressive/stealth.
 
+## protector
+Valore stimato: moltiplicatore × log(1 + DEF/ATK_medio[costo]) / log(2), floor 1.0
+Ragionamento: Protector blocca gli attacchi sugli alleati — il suo valore dipende da quanto
+la sua DEF supera l'ATK medio per quel costo. DEF = ATK_medio → ×1.0 (neutro).
+DEF doppio dell'ATK_medio → log(3)/log(2) ≈ 1.58 (come stealth). Floor a 1.0 perché
+un protector non dovrebbe mai penalizzare la carta.
+atk_medio_per_costo è calcolato nel pass 1 come media ATK per fascia di costo.
+
 ## discard_opp_1
 Valore stimato: `ln(1+1) × 0.8 = 0.6931 × 0.8 ≈ 0.554`
 Ragionamento: `_score_discard` usa `log(1+x) * 0.8` per discard avversario. Rimuovere risorse dalla mano dell'opponente vale come un draw scalato: stessa curva logaritmica, ma 0.8× perché è meno diretto di pescare tu stesso.
