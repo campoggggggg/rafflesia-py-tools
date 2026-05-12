@@ -1,179 +1,244 @@
-## draw_1
-Valore stimato: `ln(1+1) = 0.6931`
-Ragionamento: `_score_draw` usa `log(1+x)` per draw puro. Con x=1 → ln(2) ≈ 0.6931. Il log cattura il diminishing return: draw 2 vale ln(3) ≈ 1.099, non il doppio di draw 1.
+# design da aggiustare
+- dare stealth a haunting woods per allinearlo al resto del set invece di indistruttibile
+- giant cocoon ha stealth e basta, bear totem ha aggressive scritto tra ""
+- la keyword è lifedrain o life-drain?
+- mysterious shade e relenteless hunter sono due carte simili. ma secondo me bilanciate male l'un l'altra
+- submit to will e cruel ritual mettere il punto dopo "negate target card" per facilitare il conto con pytools
+- laios rotten king ha una s di troppo in minions
+- scegliere tra: set card | face-down card
+- Otherworldly Slash: no spazio dopo il mana
+- see red: da scrivere - gain (R)(R)(R)
+- otherwordly slash e rot away stesso effetto con stessa meccanica (sconto mana)
+- gnome dice "target player", altre carte "target opponent"; penso siano uguali. poi enemy si riferisce solo ai minion e "minion or player" è entrambi.
 
-## draw_1 + top_1 (filtraggio)
-Valore stimato: `ln(1+1) / sqrt(1+1/2) = 0.6931 / 1.2247 ≈ 0.566`
-Ragionamento: `_score_draw` caso 1 usa `log(1+x) / sqrt(1+y/2)` con x=1 draw, y=1 rimesso in cima. Il denominatore penalizza il rimettere carte: stai limitando la selezione, quindi vale meno di un draw puro. La radice quadrata rende la penalità sub-lineare.
+# modifiche da controllare
+- controlla disflora e realm walker, prendono bonus che non dovrebbero
 
-## hand_to_top_1
-Valore stimato: `0.566 - 0.6931 ≈ -0.127`
-Ragionamento: Differenza tra draw+top e draw puro. Rimettere 1 carta in cima è quasi neutro (penalità leggera), non -0.3333 come ipotizzato in precedenza — il denominatore `sqrt(1.5) ≈ 1.22` toglie solo ~18% del valore del draw, non 1/3.
+---
 
-## bounce_enemy_1
-Valore stimato: `+0.8`
-Ragionamento: `_score_bounce` assegna +0.8 per `"move target enemy ... hand"`. Rimbalzare una creatura avversaria genera tempo: l'avversario deve rigiocarla perdendo mana. Valore fisso, non scala — è già contestuale per natura.
+## stats (minion)
+Valore stimato: `copysign(exp(|delta| × 0.3) - 1, delta) × balance^0.5`
+Ragionamento: Le stat vengono valutate come scostamento dal vanilla (`cost × 2`). Delta positivo = sopra vanilla, negativo = sotto. La curva è esponenziale: vicino al vanilla cambia poco, alle code cresce/cala rapidamente. Il fattore `balance^0.5` penalizza minion molto sbilanciati (es. 0/6 o 6/0).
+- 1/1 costo 1 → delta=0, stats=0
+- 3/3 costo 1 → delta=+4, stats≈+2.32
+- 2/2 costo 3 → delta=-2, stats≈-0.82
+- 5/5 costo 5 → delta=0, stats=0
+- 8/8 costo 5 → delta=+6, stats≈+5.05
+- 10/10 costo 5 → delta=+10, stats≈+19.1
 
-## bounce_friendly_1
+`STATS_DELTA_K = 0.3`
+
+## draw
+Valore stimato: `DRAW_1 × (1 - 0.9^x) / (1 - 0.9)`
+Ragionamento: Draw scala con decay geometrico — ogni carta pescata vale il 90% della precedente. `DRAW_1 = 1.5`.
+- draw 1 → 1.5
+- draw 2 → 2.85
+- draw 3 → 4.07
+
+`DRAW_1 = 1.5`, `MULT_DRAW_DECAY = 0.9`
+
+## draw_condizionale
+Valore stimato: `0.5 × draw_score`
+Ragionamento: Draw condizionale su tipo carta (es. "if it is a spell, move it to your hand") vale metà del draw puro — la condizione non è sempre soddisfatta.
+
+## draw + topdeck
+Valore stimato: `draw_netto + log(1+y) × x/(x+y)`
+Ragionamento: Caso "draw X, move Y to top" — il netto è draw puro sul delta, con un bonus per il filtraggio (rimettere in cima significa aver visto più carte).
+
+## bounce_enemy
+Valore stimato: `+1.0`
+Ragionamento: `BOUNCE_ENEMY = 1.0`. Rimbalzare una creatura avversaria genera tempo — l'avversario deve rigiocarla perdendo mana.
+
+## bounce_ally
 Valore stimato: `-0.2`
-Ragionamento: `_score_bounce` assegna -0.2 per `"move target minion ... your hand"`. Rimbalzare un alleato è quasi neutro: perdi il minion sul campo questo turno, ma puoi rigiocarli per riattivare ETB. Malus leggero perché è quasi sempre una scelta voluta.
+Ragionamento: `BOUNCE_ALLY = -0.2`. Rimbalzare un alleato è quasi neutro: perdi il minion sul campo ma puoi riattivare ETB. Malus leggero perché è quasi sempre una scelta voluta.
 
-## impulsive
-Valore stimato: moltiplicatore `×1.32` sullo score base
-Ragionamento: `IMPULSIVE_MULT = 1.32`. Impulsive garantisce che la carta giochi comunque anche senza risorse — è un'affidabilità di attivazione. Il moltiplicatore si applica sull'intera somma base (stats + effetti), non come addendo.
+## bounce_all (×3.0)
+Valore stimato: `BOUNCE_ENEMY × 3.0` o `BOUNCE_ALLY × 3.0`
+Ragionamento: Stimato ~3 creature medie in campo a midgame.
 
-## stealth (minion)
-Valore stimato: moltiplicatore `×1.58` sullo score base
-Ragionamento: `STEALTH_MULT = 1.58 = log(2)/log(3)`. Stealth garantisce almeno un'attivazione sicura: il minion non può essere attaccato né targettato per un turno. Si applica come moltiplicatore perché potenzia il valore di ogni singola statistica e effetto della carta.
+## move_grave_to_hand
+Valore stimato: `+1.2`
+Ragionamento: Recuperare una carta dal proprio cimitero in mano — come un draw ma da un pool ridotto (il graveyard). Valore fisso.
 
-## stealth (spell/non-minion)
-Valore stimato: `P75_MINION × 1.58`
-Ragionamento: Una spell con stealth non ha stats proprie da moltiplicare, quindi si usa il 75° percentile dei minion come proxy del "valore medio protetto". È un'approssimazione conservativa.
+## move_grave_to_field_set
+Valore stimato: `+1.2`
+Ragionamento: Piazzare una set card dal cimitero direttamente in campo — stesso valore di grave→hand, risparmia anche il costo di giocarla set.
 
-## aggressive
-Valore stimato: moltiplicatore `×1.26` sullo score base
-Ragionamento: `AGGRESSIVE_MULT = 1.26`. Aggressive permette di attaccare subito — accelera la pressione e rende le stats più liquide. Meno forte di stealth perché non garantisce sopravvivenza, solo iniziativa.
+## move_enemy_grave
+Valore stimato: `+0.5`
+Ragionamento: Spostare una carta dal cimitero avversario al fondo del mazzo — disturbo graveyard, impedisce recuperi futuri.
 
-## always_sapped
-Valore stimato: moltiplicatore `×0.79` sullo score base
-Ragionamento: `ALWAYS_SAPPED_MULT = 0.79 = 1/1.26`. È l'inverso di aggressive: il minion non può mai attaccare. Le sue stats diventano solo difensive, quindi valgono meno. Il reciproco di AGGRESSIVE_MULT è il modo più coerente di modellarlo.
-
-## lifedrain
-Valore stimato: moltiplicatore `×1.1` sullo score base
-Ragionamento: `LIFEDRAIN_MULT = 1.1`. Recupero vita basso valore — guadagnare vita non incide direttamente sullo stato del campo. Il buff è minimo rispetto ad aggressive/stealth.
-
-## protector
-Valore stimato: moltiplicatore × log(1 + DEF/ATK_medio[costo]) / log(2), floor 1.0
-Ragionamento: Protector blocca gli attacchi sugli alleati — il suo valore dipende da quanto
-la sua DEF supera l'ATK medio per quel costo. DEF = ATK_medio → ×1.0 (neutro).
-DEF doppio dell'ATK_medio → log(3)/log(2) ≈ 1.58 (come stealth). Floor a 1.0 perché
-un protector non dovrebbe mai penalizzare la carta.
-atk_medio_per_costo è calcolato nel pass 1 come media ATK per fascia di costo.
-
-## discard_opp_1
-Valore stimato: `ln(1+1) × 0.8 = 0.6931 × 0.8 ≈ 0.554`
-Ragionamento: `_score_discard` usa `log(1+x) * 0.8` per discard avversario. Rimuovere risorse dalla mano dell'opponente vale come un draw scalato: stessa curva logaritmica, ma 0.8× perché è meno diretto di pescare tu stesso.
-
-## discard_self_1
-Valore stimato: `-0.8`
-Ragionamento: `_score_discard` usa `-x * 0.8` per discard dalla propria mano. Scartare è voluto — scegli la carta, a volte è un costo per un payoff — quindi il malus è lineare e moderato (non logaritmico).
+## discard_opp (bound by darkness)
+Valore stimato: `+3.5`
+Ragionamento: Caso specifico: rivela mano avversaria, banish 1 carta a scelta. Valore alto per la combinazione scelta + banish + informazione.
 
 ## discard_self_hand
-Valore stimato: `-2.0`
-Ragionamento: `_score_discard` assegna -2.0 fisso per `"discard your hand"`. Perdere l'intera mano è un malus pesante e non scalato, perché è quasi sempre una condizione di emergenza o un enorme costo.
+Valore stimato: `-3.5`
+Ragionamento: `DISCARD_ALL = -3.5`. Perdere l'intera mano è un malus pesante.
 
-## sap_all_enemy
-Valore stimato: `+1.2`
-Ragionamento: `_score_sap` assegna +1.2. Sappare tutti i minion avversari svuota completamente la loro capacità offensiva per un turno — è quasi una board wipe parziale in termini di impatto immediato.
+## discard_self_X
+Valore stimato: `DISCARD_1 × (1.05^x - 1) / 0.05`
+Ragionamento: `DISCARD_1 = -1.5`. Scartare scala con leggero bonus composto — scartare 2 vale leggermente più del doppio di scartare 1.
 
-## sap_target_enemy
-Valore stimato: `+0.6`
-Ragionamento: `_score_sap` assegna +0.6. Metà del valore di sap all, perché rimuovi l'attacco di un solo minion. È comunque forte perché è removal temporanea senza distruggere.
-
-## sap_self
-Valore stimato: `-0.3`
-Ragionamento: `_score_sap` assegna -0.3. Sappare sé stesso è quasi sempre un costo o una limitazione — perdi l'attacco del tuo minion questo turno.
-
-## destroy_minion
-Valore stimato: `+1.0`
-Ragionamento: `_score_destroy` assegna +1.0 per destroy target minion/enemy. È removal permanente — il valore più alto nella categoria singola destroy.
-
-## destroy_all
-Valore stimato: `+1.5`
-Ragionamento: `_score_destroy` assegna +1.5 per `"destroy all"` (no friendly). Board wipe — valore molto alto ma simmetrico, quindi non +2.0.
-
-## destroy_territory
-Valore stimato: `+0.6`
-Ragionamento: `_score_destroy` assegna +0.6. Rimuovere una risorsa avversaria permanente (territorio) è buono ma meno urgente di rimuovere un minion.
-
-## destroy_face_down
-Valore stimato: `+0.5`
-Ragionamento: `_score_destroy` assegna +0.5. Rimuovere set cards è utile ma è removal contestuale — non sai sempre cosa stai rimuovendo.
-
-## destroy_friendly
-Valore stimato: `-0.5`
-Ragionamento: `_score_destroy` assegna -0.5. Distruggere i propri minion/territori è quasi sempre un costo, non un vantaggio.
-
-## deal_damage_all_X
-Valore stimato: `ln(1+X) × 1.2`
-Ragionamento: `_score_deal_damage` usa `log(1+x) * 1.2`. AoE ha il moltiplicatore più alto perché colpisce più bersagli con un solo effetto. Es: X=2 → ln(3)*1.2 ≈ 1.317.
-
-## deal_damage_flexible_X
-Valore stimato: `ln(1+X) × 1.0`
-Ragionamento: `_score_deal_damage` usa `log(1+x) * 1.0` per "minion or player" / "enemy". Flessibilità di bersaglio vale il moltiplicatore pieno.
-
-## deal_damage_minion_X
-Valore stimato: `ln(1+X) × 0.8`
-Ragionamento: `_score_deal_damage` usa `log(1+x) * 0.8`. Solo minion — meno flessibile, malus 0.8×.
-
-## gain_life_X
-Valore stimato: `ln(1+X) × 0.3`
-Ragionamento: `_score_gain_life` scala logaritmicamente con coefficiente basso (0.3). Guadagnare 10 vita non è il doppio di 5: dopo un certo punto la vita aggiuntiva ha rendimenti decrescenti forti.
-
-## ramp_1 (gain mana color)
-Valore stimato: `1 × 0.7 = 0.7`
-Ragionamento: `_score_ramp` conta i simboli mana nel gain e li moltiplica per 0.7. Ogni simbolo di mana colorato guadagnato vale 0.7 — accelerazione risorse è molto forte.
-
-## mill_opp_X
-Valore stimato: `ln(1+X) × 0.4`
-Ragionamento: `_score_mill` usa `log(1+x) * 0.4` per mill avversario. Vale di più del mill proprio perché rimuove risorse future dell'opponente.
-
-## mill_self_X
-Valore stimato: `ln(1+X) × 0.1`
-Ragionamento: `_score_mill` usa `log(1+x) * 0.1`. Mill proprio è quasi sempre setup per effetti da cimitero, non removal — quindi coefficiente basso.
-
-## pump_XY
-Valore stimato: `(X+Y) × 0.3`
-Ragionamento: `_score_pump` somma ATK e DEF del pump e moltiplica per 0.3. Coerente con `_score_stats` che somma atk+def direttamente, ma con uno sconto (il pump è temporaneo e condizionale).
+## negate
+Valore stimato: `3.5 × (1 - exp(-costo/3))` se con cap di costo, `×0.5` se situazionale
+Ragionamento: `NEGATE_VALUE = 3.5`. Controstrega pura vale 3.5. Con cap di costo scala decrescente: negare carte care è più forte. Con condizione "equal to" dimezza il valore.
 
 ## sacrifice_this
-Valore stimato: `-stats` del minion
-Ragionamento: `_score_sacrifice` restituisce `-_score_stats()` per `"sacrifice this"`. Il costo è esattamente le stats che stai perdendo — simmetrico con come vengono valutate le stats base.
+Valore stimato: `-abs(stats)`
+Ragionamento: Sacrificare se stesso è un malus proporzionale al valore assoluto delle stats perdute. Il `abs` evita che carte sotto vanilla generino un valore positivo.
 
-## sacrifice_territory_X / sacrifice_minion_X
-Valore stimato: `-X × 1.4`
-Ragionamento: `_score_sacrifice` assegna -1.4 per territorio/minion sacrificato. Vale più delle stats pure (1.4 > 1.0 della stat media) perché perdere un permanente ha impatto sia sul campo che sui turni futuri.
+## sacrifice_territory_X
+Valore stimato: `SACRIFICE_TERRITORY × (1.05^x - 1) / 0.05`
+Ragionamento: `SACRIFICE_TERRITORY = -2.5`. Perdere un territorio è perdere sia la carta che la risorsa. Scala con leggero composto.
 
-## minion_to_botdeck
-Valore stimato: `+0.7`
-Ragionamento: `_score_minion_to_botdeck` assegna +0.7. È removal soft — il minion non è distrutto, ma è fuori gioco per molti turni. Tra destroy (+1.0) e bounce (-0.2), tende a destroy per permanenza ma meno per irreversibilità.
+## destroy_friendly
+Valore stimato: `-1.0`
+
+## destroy_all_friendly
+Valore stimato: `-2.5`
+
+## destroy_face_down
+Valore stimato: `+1.0`
+
+## destroy_face_down_flexible
+Valore stimato: `+1.1`
+
+## destroy_enemy_card (territory)
+Valore stimato: `+2.5`
+
+## destroy_enemy_minion
+Valore stimato: `+1.6`
+
+## destroy_minion (flexible)
+Valore stimato: `+1.8`
+
+## destroy_all
+Valore stimato: `+4.5`
+Ragionamento: Board wipe — valore molto alto ma simmetrico.
+
+## deal_damage_all_enemies_X
+Valore stimato: `log(1+x) × 2.4`
+Ragionamento: `DAMAGE_ALL_ENEMIES_K = 2.4`. AoE su tutti i nemici incluso il giocatore.
+
+## deal_damage_all_minions_X
+Valore stimato: `log(1+x) × 2.2`
+Ragionamento: `DAMAGE_ALL_MINIONS_K = 2.2`. AoE simmetrico solo minion.
+
+## deal_damage_minion_or_player_X
+Valore stimato: `(DAMAGE_1_TARGET + DAMAGE_1_PLAYER) × x = 0.9 × x`
+Ragionamento: Target flessibile minion o giocatore — somma dei due coefficienti.
+
+## deal_damage_target_enemy_X
+Valore stimato: `DAMAGE_1_TARGET × x = 0.7 × x`
+Ragionamento: `DAMAGE_1_TARGET = 0.7`. Danno singolo a minion.
+
+## deal_damage_opponent_X
+Valore stimato: `DAMAGE_1_PLAYER × x = 0.2 × x`
+Ragionamento: `DAMAGE_1_PLAYER = 0.2`. Danno diretto al giocatore — basso valore.
 
 ## must_attack
-Valore stimato: `-0.4`
-Ragionamento: `_score_must_attack` assegna -0.4. Perdere la scelta di attacco è una limitazione tattica significativa — a volte attaccare è sbagliato e non puoi evitarlo.
+Valore stimato: `-0.3`
+Ragionamento: Perdere la scelta di attacco è una limitazione tattica.
 
-## summon_from_grave (minion, capped X)
-Valore stimato: `ln(1+X) × 0.5`
-Ragionamento: `_score_summon_from_grave` usa `log(1+cap) * 0.5`. Cap più alto = minion più forti reanimabili. Senza cap → +1.0 fisso (massima flessibilità).
+## summon_from_grave_minion (con cap X)
+Valore stimato: `log(1+cap) × 1.4`
+Ragionamento: Cap più alto = minion più forti reanimabili. Senza cap → `+3.0`.
 
-## summon_from_grave (territory)
-Valore stimato: `+0.6`
-Ragionamento: Recuperare un territorio dal cimitero è ramp/recupero risorse, più sicuro ma meno impattante di un minion.
+## summon_from_grave_territory
+Valore stimato: `+2.5`
+Ragionamento: Simmetrico a `SACRIFICE_TERRITORY` in positivo — recuperare un territorio equivale a non averlo perso.
 
-## scry_X (reveal top X)
-Valore stimato: `ln(1+X) × 0.3`
-Ragionamento: `_score_scry` usa `log(1+x) * 0.3`. Informazione pura — basso coefficiente perché non cambi materialmente lo stato del gioco, solo lo conosci meglio.
+## mana_discount_grave (scalabile)
+Valore stimato: `+3.5`
+Ragionamento: Sconto che cresce con le carte al cimitero — scala in lategame, valore alto.
+
+## mana_discount_minion (scalabile)
+Valore stimato: `+3.0`
+Ragionamento: Sconto che cresce con i minion amici — scala con la board.
 
 ## mana_discount_fixed_N
-Valore stimato: `N × 0.3`
-Ragionamento: `_score_mana_discount` assegna `x * 0.3` per sconto fisso. Ogni mana risparmiato vale 0.3 — meno di ramp (0.7) perché è una tantum e non genera mana nuovo.
+Valore stimato: `N × 0.8`
+Ragionamento: Ogni mana risparmiato fisso vale 0.8.
 
-## mana_discount_scale (grave/minion)
-Valore stimato: `+0.7` o `+0.8`
-Ragionamento: Sconto scalabile con minion amici (+0.7) o cimitero (+0.8). Vale di più di uno sconto fisso perché cresce con il gioco.
+## mana_discount_instead_of_paying
+Valore stimato: `cost_neutral × 0.5`
+Ragionamento: Costo alternativo (sacrifica invece di pagare) — vale metà del costo neutro evitato.
 
-## gain_mana_X
-Valore stimato: `X × 0.5`
-Ragionamento: `_score_gain_mana` usa `x * 0.5`. Mana neutro temporaneo vale meno di ramp colorato (0.7) ma più di uno sconto fisso (0.3) — è immediato e flessibile.
+## scry_X (reveal top X)
+Valore stimato: `log(1+x) × 0.3`
+Ragionamento: Informazione pura — basso coefficiente.
 
-## attach
-Valore stimato: `+0.4`
-Ragionamento: `_score_attach` assegna +0.4 fisso. Valore contestuale — aggiungere carte a un minion per effetti bonus è utile ma dipende dalla sinergia.
+## reveal_then_summon (con cap X)
+Valore stimato: `log(1+cap) × 0.4`
+Ragionamento: Rivela e evoca — valore dipende dal cap. Senza cap → `+0.5`.
+
+## reveal_then_draw
+Valore stimato: `+0.3`
+Ragionamento: Rivela e pesca — valore informazione + carta, fisso basso.
+
+## ramp_N (gain mana color)
+Valore stimato: `N × 1.0`
+Ragionamento: Ogni simbolo di mana colorato guadagnato vale 1.0.
 
 ## recycle_X
-Valore stimato: `ln(1+X) × 0.2` oppure `+0.2` flat
-Ragionamento: `_score_recycle` usa `log(1+x) * 0.2`. Rimettere carte nel mazzo è valore molto basso — non pesca, non genera risorse, solo posticipa l'esaurimento del mazzo.
+Valore stimato: `log(1+x) × 0.2` oppure `+0.2` flat
+Ragionamento: Rimettere carte nel mazzo — valore molto basso, non pesca né genera risorse.
+
+## gain_life_X
+Valore stimato: `log(1+x) × 0.5`
+Ragionamento: Scala logaritmicamente — guadagnare 10 vita non è il doppio di 5.
+
+## sap_all_enemy
+Valore stimato: `+1.5`
+
+## sap_target_enemy / sap_target_minion
+Valore stimato: `+0.5`
+
+## sap_self / sap_target_ready_friendly
+Valore stimato: `-0.5`
+
+## pump +X/+Y (permanente, singolo)
+Valore stimato: `(x+y) × 0.6`
+Ragionamento: Permanente vale il doppio del temporaneo.
+
+## pump +X/+Y (temporaneo, singolo)
+Valore stimato: `(x+y) × 0.3`
+
+## pump +X/+Y (all minions ×3.0)
+Valore stimato: `base × 3.0`
+Ragionamento: ~3 creature medie in campo a midgame.
+
+## mill_opp_X
+Valore stimato: `log(1+x) × 0.4`
+
+## mill_self_X
+Valore stimato: `log(1+x) × 0.1`
 
 ## spell_card_cost
-Valore stimato: `-1.0`
-Ragionamento: `_spell_card_cost` assegna -1 per tutte le spell. Giocare una spell consuma una carta dalla mano — card disadvantage implicito che non si vede nelle stats. Ogni effetto di una spell deve guadagnare almeno +1 sopra il suo valore per pareggiare questo costo.
+Valore stimato: `0.0`
+Ragionamento: `SPELL_CARD_VALUE = -0.0`. Attualmente non applicato — le spell non ricevono penalità esplicita per il card disadvantage implicito.
+
+## legendary_debuff
+Valore stimato: moltiplicatore `×0.8`
+Ragionamento: Le carte leggendarie sono limitate a 1 copia per mazzo — minore consistenza, quindi malus sul valore complessivo.
+
+## condition_mult
+Valore stimato: moltiplicatore `×0.9 / ×0.75 / ×0.5`
+Ragionamento: Tre tier di restrittività delle condizioni:
+- `×0.9` — quasi sempre vera (es. "if it was played", "if this dealt damage this turn")
+- `×0.75` — abbastanza comune (es. "if you have 2 or less cards in hand", "if this is the only card in your hand")
+- `×0.5` — restrittiva (es. "if a territory card was moved to your grave this turn", "if you have 6 or more cards in your hand")
+
+## keyword_mult
+- `stealth`: `×1.33`
+- `aggressive`: `×1.20`
+- `protector`: `×1.20`
+- `lifedrain`: `×1.10`
+- `impulsive`: `×1.22`
+- `always_sapped`: `×0.80`
+
+## grant_keyword_mult
+Valore stimato: stesso moltiplicatore della keyword, `×0.75` se "until end of turn"
+Ragionamento: Dare una keyword a un alleato vale come averla — se temporanea vale il 75%.

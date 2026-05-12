@@ -53,6 +53,7 @@ def normalize_text(raw: str) -> str:
     t = t.replace("move all other minions from the field to the hand", "move all friendly minion, move all target enemy") # rau
 
     # sinonimi draw
+    t = re.sub(r"if it is\b.*move it to your hand", "draw 1 if condition", t)
     t = t.replace("move it to your hand", "draw 1")
     t = t.replace("draw X", "draw 2") #placeholder per dare un valore fittizio a draw X
 
@@ -79,6 +80,7 @@ def normalize_text(raw: str) -> str:
     # "to a randomly chosen enemy" → tratta come "target enemy" per lo scoring
     t = re.sub(r"deal (\d+) damage to a randomly chosen enemy", r"deal \1 damage to target enemy", t)
     t = t.replace("deal X damage", "deal 3 damage") # placeholder, da pensarci
+    t = t.replace("damage to target player", "damage to target opponent")
 
     # ── SUMMON FROM GRAVE ────────────────────────────────────────
     t = re.sub(
