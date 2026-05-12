@@ -2,7 +2,7 @@ import pandas as pd
 import math
 import re
 from database.load_cards import load_cards
-from text_normalizer import normalize_text
+from utility.text_normalizer import normalize_text
 
 # KEYWORD
 STEALTH_MULT = 1.33         # 
@@ -239,36 +239,36 @@ def efficiency(card):
     def _score_destroy():
         score = 0
 
-        # destroy alleato — malus o costo
-        if "destroy target friendly" in text:
-            score += -1.0
+        def count(pattern):
+            return len(re.findall(pattern, text))
 
-        if "destroy all friendly" in text:
-            score += -2.5
+        # ── target singolo (usa findall per carte con effetti multipli) ─
+        score += count(r"destroy target enemy minion")    *  1.6
+        score += count(r"destroy target friendly minion") * -1.0
+        score += count(r"destroy target minion(?! or)(?! with)") *  1.8
 
-        # destroy face-down — rimuove set cards, valore medio
-        if "destroy target enemy face-down" in text:
-            score += 1.0
+        score += count(r"destroy target enemy face-down")    *  1.0
+        score += count(r"destroy target friendly face-down") * -0.3
+        score += count(r"destroy target face-down")          *  1.1
 
-        if "destroy target face-down" in text:
-            score += 1.1
+        score += count(r"destroy target minion or face-down") * 1.8
 
-        # destroy territory — rimuove risorsa avversaria
-        if "destroy target enemy card" in text:
-            score += 2.5
+        score += count(r"destroy target enemy card") * 2.5
 
-        # destroy minion avversario — valore alto
-        if re.search(r"destroy target enemy minion", text):
-            score += 1.6
-        elif re.search(r"destroy target minion", text):  # friendly o neutro
-            score += 1.8  # più flessibile
-
-        # destroy all — board wipe, valore molto alto ma simmetrico
-        if "destroy all" in text and "minions" in text:
+        # ── all ─────────────────────────────────────────────────
+        if "destroy all enemy minions" in text:
             score += 4.5
+        elif "destroy all friendly minions" in text:
+            score += -2.5
+        elif "destroy all minions" in text:
+            score += 4.0
 
-        if "destroy all" in text and ("face-down" in text or "set" in text):
-            score += 2.5
+        if "destroy all enemy face-down" in text:
+            score += 2.2
+        elif "destroy all friendly face-down" in text:
+            score += -1.0
+        elif "destroy all face-down" in text:
+            score += 2.0
 
         return _add("destroy", score)
 
@@ -487,6 +487,79 @@ def efficiency(card):
 
         return _add("pump", score)
 
+    # ── SUMMON TOKEN ────────────────────────────────────────────
+
+    TOKEN_COEFFS = {
+        "soldier": 1.0,
+        "horde":   1.5,
+        "ghoul":   2.5,
+        "copy":    2.0,
+    }
+
+    def _score_summon_token():
+        match = re.search(r"summon (\d+) \w+ token", text)
+        if not match:
+            return _add("summon_token", 0)
+        n = int(match.group(1))
+        for token_type, coeff in TOKEN_COEFFS.items():
+            if token_type in text:
+                return _add("summon_token", n * coeff)
+        return _add("summon_token", 0)
+
+    # ── TRIGGER BONUS ───────────────────────────────────────────
+
+    def _score_trigger():
+        score = 0
+
+        # triggered continuo
+        if "when this attacks an enemy minion" in text:
+            score += 0.3
+        elif "when this attacks" in text:
+            score += 0.4
+
+        if "when this damages an opponent" in text:
+            score += 0.35
+
+        if "when you summon another minion" in text:
+            score += 0.5
+        if "when you summon an insector minion" in text:
+            score += 0.35
+        if "when you play a card" in text:
+            score += 0.5
+        elif "when you play a spell card" in text:
+            score += 0.4
+        elif "when you play a minion with a cost of 4 or more" in text:
+            score += 0.3
+
+        if "when you discard 1" in text:
+            score += 0.3
+        if "when you sacrifice 1 territory card" in text:
+            score += 0.3
+
+        # triggered condizionale / raro
+        if "when this is destroyed" in text:
+            score += 0.2
+        if "when this is damaged" in text:
+            score += 0.2
+        if "when this is sapped" in text:
+            score += 0.2
+        if "when this is discarded" in text:
+            score += 0.2
+        if "when this is moved from the field" in text:
+            score += 0.2
+        if "when this leaves the field" in text:
+            score += 0.2
+        if "when this receives 1 or more damage" in text:
+            score += 0.2
+        if "when another friendly minion is destroyed" in text:
+            score += 0.3
+        if "when a territory card is moved to your grave" in text:
+            score += 0.25
+        if "when 1 or more friendly territories are sacrificed" in text:
+            score += 0.25
+
+        return _add("trigger", score)
+
     # ── MILL ────────────────────────────────────────────────────
 
     def _score_mill():
@@ -525,13 +598,13 @@ def efficiency(card):
             return _add("condition_mult", 0.75)
         if "if you have 2 or less cards in hand" in text:
             return _add("condition_mult", 0.75)
-        if "if you have no cards in your hand" in text:
-            return _add("condition_mult", 0.75)
         if "if you have less than 1 card in your grave" in text:
             return _add("condition_mult", 0.75)
 
         # tier 0.5 — restrittiva
         if "if a territory card was moved to your grave this turn" in text:
+            return _add("condition_mult", 0.5)
+        if "if you have no cards in your hand" in text:
             return _add("condition_mult", 0.5)
         if "if a card was moved from your field to your hand this turn" in text:
             return _add("condition_mult", 0.5)
@@ -579,6 +652,8 @@ def efficiency(card):
         + _score_sap()
         + _score_pump()
         + _score_mill()
+        + _score_summon_token()
+        + _score_trigger()
     )
 
     total = (

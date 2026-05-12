@@ -12,27 +12,33 @@ def normalize_text(raw: str) -> str:
     t = re.sub(r"\s+", " ", t)
 
     #--DESTROY--------------------------------------------
-    # destroy target minion 
-    # destroy target enemy minion 
+    # destroy target minion
+    # destroy target enemy minion
     # destroy target friendly minion
 
-    # destroy target face-down 
-    # destroy target enemy face-down 
-    # destroy all friendly face-down
-     
+    # destroy target face-down
+    # destroy target enemy face-down
+    # destroy target friendly face-down
+
     # destroy all minions
+    # destroy all enemy minions
+    # destroy all friendly minions (= set cards)
 
-    #destroy target enemy card (fa anche territory)
+    # destroy target minion or face-down
 
+    # destroy target enemy card (territory)
+
+    # normalizza "set card/s" → "face-down"
+    t = re.sub(r"\bset cards?\b", "face-down", t)
 
     t = t.replace("destroy all other minions", "destroy all minions")
 
-    t = re.sub(r"destroy up to (\d+) set card", lambda m: 
-               ("destroy target face-down " * int(m.group(1))).strip(), t) # up to x set card
-    t = re.sub(r"destroy up to (\d+) target minion and/or set card", lambda m: 
-               ("destroy target face-down " * int(m.group(1))).strip(), t) # up to x set and/or minion
-    t = re.sub(r"destroy up to (\d+) target minion", lambda m: 
-               ("destroy target face-down " * int(m.group(1))).strip(), t) # up to x  minion
+    t = re.sub(r"destroy up to (\d+) face-down", lambda m:
+               ("destroy target face-down " * int(m.group(1))).strip(), t)
+    t = re.sub(r"destroy up to (\d+) target minion and/or face-down", lambda m:
+               ("destroy target minion or face-down " * int(m.group(1))).strip(), t)
+    t = re.sub(r"destroy up to (\d+) target minion", lambda m:
+               ("destroy target minion " * int(m.group(1))).strip(), t)
     
     t = t.replace("move all minions to the bottom", "destroy all minions")
     t = t.replace("move target enemy minion to the bottom", "destroy target enemy minion")
@@ -78,7 +84,7 @@ def normalize_text(raw: str) -> str:
     # "target opponent" come bersaglio → "target player"
     t = re.sub(r"deal (\d+) damage to target player", r"deal \1 damage to target opponent", t)
     # "to a randomly chosen enemy" → tratta come "target enemy" per lo scoring
-    t = re.sub(r"deal (\d+) damage to a randomly chosen enemy", r"deal \1 damage to target enemy", t)
+    t = re.sub(r"deal (\d+) damage to a random(?:ly chosen)? enemy", r"deal \1 damage to target enemy", t)
     t = t.replace("deal X damage", "deal 3 damage") # placeholder, da pensarci
     t = t.replace("damage to target player", "damage to target opponent")
 

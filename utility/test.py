@@ -1,6 +1,6 @@
 import pandas as pd
 from database.load_cards import load_cards
-from text_normalizer import normalize_text
+from utility.text_normalizer import normalize_text
 
 
 df = load_cards()
