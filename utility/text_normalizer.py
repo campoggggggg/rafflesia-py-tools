@@ -6,27 +6,20 @@ def normalize_text(raw: str) -> str:
 
     # punteggiatura e varianti grafiche
     t = t.replace("\r\n", " ").replace("\n", " ")
-    t = t.replace("-", " ")
+
+    # canonicalizza gain stats PRIMA di rimuovere i trattini (non funzionava comunque)
+    t = re.sub(r"gains? \+(\d+)/\+(\d+)", r"gains +\1/+\2", t, flags=re.IGNORECASE)
+    t = re.sub(r"gains? -(\d+)/-(\d+)", r"gains -\1/-\2", t, flags=re.IGNORECASE)
+    # protegge i segni +/- nelle stats dalla rimozione generale del trattino
+    t = re.sub(r"gains ([+\-]\d+)/([+\-]\d+)", lambda m: f"gains {m.group(1)}/{m.group(2)}", t)
+
     t = t.replace('"', "")
     t = t.replace("\u201c", "").replace("\u201d", "")
     t = re.sub(r"\s+", " ", t)
 
+    t = t.replace('"aggressive"', "aggressive")
+
     #--DESTROY--------------------------------------------
-    # destroy target minion
-    # destroy target enemy minion
-    # destroy target friendly minion
-
-    # destroy target face-down
-    # destroy target enemy face-down
-    # destroy target friendly face-down
-
-    # destroy all minions
-    # destroy all enemy minions
-    # destroy all friendly minions (= set cards)
-
-    # destroy target minion or face-down
-
-    # destroy target enemy card (territory)
 
     # normalizza "set card/s" → "face-down"
     t = re.sub(r"\bset cards?\b", "face-down", t)
@@ -39,6 +32,13 @@ def normalize_text(raw: str) -> str:
                ("destroy target minion or face-down " * int(m.group(1))).strip(), t)
     t = re.sub(r"destroy up to (\d+) target minion", lambda m:
                ("destroy target minion " * int(m.group(1))).strip(), t)
+    
+    t = re.sub(r"destroy (\d+) face-down", lambda m:
+            ("destroy target face-down " * int(m.group(1))).strip(), t)
+    t = re.sub(r"destroy (\d+) target minion and/or face-down", lambda m:
+            ("destroy target minion or face-down " * int(m.group(1))).strip(), t)
+    t = re.sub(r"destroy (\d+) target minion", lambda m:
+            ("destroy target minion " * int(m.group(1))).strip(), t)
     
     t = t.replace("move all minions to the bottom", "destroy all minions")
     t = t.replace("move target enemy minion to the bottom", "destroy target enemy minion")

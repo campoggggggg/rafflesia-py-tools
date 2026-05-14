@@ -2,7 +2,7 @@ import pandas as pd
 from database.load_cards import load_cards
 from utility.text_normalizer import normalize_text
 
-
+# 
 df = load_cards()
 df_m = df[df["type_line"] == "Minion"].copy()
 df_m["total"] = df_m["atk"].fillna(0) + df_m["def"].fillna(0)
