@@ -1,0 +1,21 @@
+[
+  {"name": "Brain Fog",                    "power_class": "bilanciata"},
+  {"name": "Stack the Deck",               "power_class": "bilanciata"},
+  {"name": "Bound by Darkness",            "power_class": "forte"},
+  {"name": "Lightning Bolt in a Bottle",   "power_class": "forte"},
+  {"name": "Request Tribute",              "power_class": "bilanciata"},
+  {"name": "Submit Will",                  "power_class": "forte"},
+  {"name": "Lucard, Lord of Bats",         "power_class": "forte"},
+  {"name": "Fugitive Burglar",             "power_class": "debole"},
+  {"name": "City Vulture",                 "power_class": "forte"},
+  {"name": "Taunting Legionnaire",         "power_class": "bilanciata"},
+  {"name": "Territorial Bjorn",            "power_class": "bilanciata"},
+  {"name": "Roaming Wendigo",              "power_class": "bilanciata"},
+  {"name": "Overgrown Croacker",           "power_class": "bilanciata"},
+  {"name": "Disflora, Apex Hunter",        "power_class": "bilanciata"},
+  {"name": "Rapid Decay",                  "power_class": "bilanciata"},
+  {"name": "Force in Exile",               "power_class": "bilanciata"},
+  {"name": "Maul, Starhopper",             "power_class": "bilanciata"},
+  {"name": "Flameborn Bear",               "power_class": "forte"},
+  {"name": "Reinforcements of the Army",   "power_class": "forte"}
+]

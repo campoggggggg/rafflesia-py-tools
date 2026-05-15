@@ -1,6 +1,5 @@
 import math
 import pandas as pd
-from .constants import STATS_DELTA_K, SPELL_CARD_VALUE
 
 
 def score_stats(card) -> float:
@@ -15,6 +14,6 @@ def score_stats(card) -> float:
             atk = 0.5
         vanilla     = cost * 2
         delta       = total - vanilla
-        delta_score = math.copysign(math.exp(abs(delta) * STATS_DELTA_K) - 1, delta)
+        delta_score = math.copysign(math.sqrt(abs(delta)), delta)
         return delta_score
     return 0.0

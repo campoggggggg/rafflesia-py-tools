@@ -1,0 +1,223 @@
+id,name,type_line,color,cost_neutral,cost_color,atk,def,power_class,power_class_conf
+55,"Lucard, Lord of Bats",Minion,blue,4.0,1.0,3.0,3.0,bilanciata,0.363
+142,Wandering Forest,Minion,green,4.0,1.0,3.0,3.0,bilanciata,0.42
+23,Death Dealer,Minion,black,0.0,2.0,2.0,2.0,bilanciata,0.445
+222,Wise Herbologist,Minion,colorless,5.0,,2.0,2.0,bilanciata,0.446
+100,"Birke, Protector of Life",Minion,green,0.0,3.0,3.0,3.0,bilanciata,0.457
+10,"Miautz, Criminal Mastermind",Minion,black,0.0,3.0,0.0,4.0,bilanciata,0.479
+42,Rot Away,Spell,black,5.0,2.0,,,bilanciata,0.48
+104,"Disflora, Apex Hunter",Minion,green,4.0,2.0,2.0,2.0,bilanciata,0.485
+106,Outrage,Spell,green,3.0,1.0,,,bilanciata,0.5
+68,Burning Knowledge,Spell,blue,3.0,1.0,,,bilanciata,0.502
+5,Gate to the Underworld,Spell,black,3.0,1.0,,,bilanciata,0.505
+44,Temptation of the Night,Spell,black,0.0,2.0,,,bilanciata,0.526
+66,Back Alley Assassin,Minion,blue,1.0,1.0,2.0,2.0,bilanciata,0.533
+132,Migration of the Forsaken,Spell,green,0.0,1.0,,,bilanciata,0.543
+119,Feral Shaman,Minion,green,1.0,1.0,2.0,2.0,bilanciata,0.544
+43,Shining Drifter,Minion,black,0.0,1.0,0.0,2.0,bilanciata,0.546
+130,Keeper of the Grove,Minion,green,1.0,3.0,2.0,4.0,bilanciata,0.562
+135,Ravager,Minion,green,0.0,2.0,1.0,1.0,bilanciata,0.564
+153,Reinforcements of the Army,Spell,red,1.0,1.0,,,bilanciata,0.576
+175,Wildfire,Spell,red,1.0,1.0,,,bilanciata,0.591
+92,Stoic Runehart,Minion,blue,2.0,2.0,3.0,3.0,bilanciata,0.597
+27,Gloomy Infiltrator,Minion,black,2.0,1.0,2.0,3.0,bilanciata,0.605
+178,Force in Exile,Minion,red,3.0,1.0,4.0,3.0,bilanciata,0.609
+51,"Francus, Pope of Demise",Minion,blue,0.0,2.0,1.0,1.0,bilanciata,0.613
+128,Insector Scrabble,Minion,green,2.0,2.0,4.0,2.0,bilanciata,0.635
+121,Forced Metamorphosis,Spell,green,1.0,1.0,,,bilanciata,0.637
+102,"Braum, the Defiant",Minion,green,2.0,1.0,4.0,3.0,bilanciata,0.642
+213,Realm Walker,Minion,colorless,3.0,,3.0,4.0,bilanciata,0.644
+93,Trespass,Spell,blue,1.0,1.0,,,bilanciata,0.646
+14,"Trivikrama, Gran Conqueror",Minion,black,0.0,2.0,2.0,2.0,bilanciata,0.651
+217,Surprising Lama,Minion,colorless,2.0,,0.0,1.0,bilanciata,0.651
+209,Mouse Seer,Minion,colorless,2.0,,0.0,1.0,bilanciata,0.652
+49,"Edwin, Legendary Thief",Minion,blue,3.0,1.0,3.0,4.0,bilanciata,0.658
+111,"Taxus, the Rotten",Minion,green,1.0,2.0,0.0,3.0,bilanciata,0.658
+196,Black Rider,Minion,colorless,4.0,,3.0,4.0,bilanciata,0.67
+212,Nordic Shield Master,Minion,colorless,4.0,,3.0,5.0,bilanciata,0.67
+203,Fiendish Bookworm,Minion,colorless,2.0,,1.0,1.0,bilanciata,0.673
+39,Relentless Hunter,Minion,black,2.0,1.0,4.0,3.0,bilanciata,0.674
+171,Flameborn Bear,Minion,red,3.0,1.0,4.0,3.0,bilanciata,0.679
+115,Commune with the Wilds,Spell,green,1.0,1.0,,,bilanciata,0.68
+208,Mouse Herder,Minion,colorless,2.0,,0.0,4.0,bilanciata,0.681
+201,Demonic Prophet,Minion,colorless,2.0,,0.0,4.0,bilanciata,0.682
+71,Deadly Poison,Spell,blue,0.0,3.0,,,bilanciata,0.687
+199,Caring Attendant,Minion,colorless,2.0,,2.0,3.0,bilanciata,0.687
+158,Scorching Sun,Spell,red,0.0,2.0,,,bilanciata,0.689
+116,Cruel Salvation,Spell,green,0.0,2.0,,,bilanciata,0.695
+29,Invasive Architect,Minion,black,0.0,2.0,2.0,2.0,bilanciata,0.698
+30,Invasive Brute,Minion,black,0.0,2.0,2.0,2.0,bilanciata,0.698
+31,Invasive Diplomat,Minion,black,0.0,2.0,2.0,2.0,bilanciata,0.698
+33,Invasive Technomancer,Minion,black,0.0,2.0,2.0,2.0,bilanciata,0.698
+34,Invasive Vanguard,Minion,black,0.0,2.0,2.0,2.0,bilanciata,0.698
+141,Territorial Bjorn,Minion,green,3.0,1.0,4.0,4.0,bilanciata,0.701
+90,Rune of Power,Spell,blue,0.0,2.0,,,bilanciata,0.702
+48,Wrathful Vassal,Minion,black,3.0,1.0,4.0,4.0,bilanciata,0.703
+109,Rapid Decay,Spell,green,1.0,1.0,,,bilanciata,0.703
+129,Insector Workerbee,Minion,green,1.0,1.0,1.0,1.0,bilanciata,0.71
+180,Archfiend Lightning,Spell,red,0.0,2.0,,,bilanciata,0.711
+17,Back Ritual,Spell,black,1.0,1.0,,,bilanciata,0.711
+202,Eel Dragon,Minion,colorless,4.0,,4.0,1.0,bilanciata,0.718
+210,Murderous Spouse,Minion,colorless,3.0,,3.0,3.0,bilanciata,0.718
+138,Seek Asylum,Spell,green,1.0,1.0,,,bilanciata,0.719
+207,Masked Spy,Minion,colorless,4.0,,0.0,4.0,bilanciata,0.72
+169,Chronicler of the Void,Minion,red,1.0,1.0,3.0,2.0,bilanciata,0.721
+20,Cold Impact,Spell,black,0.0,3.0,,,bilanciata,0.723
+107,Population Devastation Virus,Spell,green,0.0,2.0,,,bilanciata,0.724
+45,Thing in the Ice,Minion,black,1.0,1.0,1.0,1.0,bilanciata,0.732
+221,Trash Scavenger,Minion,colorless,2.0,,2.0,2.0,bilanciata,0.738
+197,Bloody Masochist,Minion,colorless,3.0,,0.0,3.0,bilanciata,0.742
+74,Dracul's Follower,Minion,blue,1.0,2.0,3.0,2.0,bilanciata,0.747
+18,Black Door,Spell,black,0.0,2.0,,,bilanciata,0.749
+46,Vanish,Spell,black,0.0,2.0,,,bilanciata,0.749
+103,"Cocci, Curious Ladybug",Minion,green,2.0,1.0,0.0,1.0,bilanciata,0.756
+78,Experiment #2,Minion,blue,1.0,1.0,1.0,2.0,bilanciata,0.757
+3,Bad Omen,Spell,black,0.0,2.0,,,bilanciata,0.759
+98,"Apis, Insector Matriarch",Minion,green,1.0,1.0,2.0,2.0,bilanciata,0.77
+143,Wild Scavenger,Minion,green,1.0,1.0,2.0,2.0,bilanciata,0.772
+8,"Laios, Rotting King",Minion,black,2.0,1.0,1.0,3.0,bilanciata,0.783
+218,Taunting Legionnaire,Minion,colorless,4.0,,2.0,3.0,bilanciata,0.784
+173,Flameborn Wolf,Minion,red,1.0,1.0,2.0,1.0,bilanciata,0.785
+80,Experiment #4,Minion,blue,3.0,1.0,1.0,4.0,bilanciata,0.786
+179,Paper Frog,Minion,red,1.0,1.0,1.0,2.0,bilanciata,0.787
+11,"Mitril, the Forgotten",Minion,black,2.0,1.0,2.0,1.0,bilanciata,0.795
+184,Siege,Spell,red,3.0,1.0,,,bilanciata,0.798
+75,Enchanted Grove,Spell,blue,2.0,2.0,,,bilanciata,0.801
+82,Forced Conversion,Spell,blue,2.0,2.0,,,bilanciata,0.801
+36,Mysterious Shade,Minion,black,1.0,1.0,3.0,2.0,bilanciata,0.805
+60,"Sadu, False Prophet",Minion,blue,2.0,1.0,3.0,1.0,bilanciata,0.805
+147,Divine Smite,Spell,red,1.0,2.0,,,bilanciata,0.805
+215,Strike Squad,Minion,colorless,3.0,,2.0,3.0,bilanciata,0.81
+114,Benevolent Oak,Minion,green,2.0,1.0,0.0,4.0,bilanciata,0.818
+190,Valorous Commander,Minion,red,3.0,1.0,3.0,3.0,bilanciata,0.821
+24,Doomed Soldier,Minion,black,1.0,1.0,2.0,2.0,bilanciata,0.822
+79,Experiment #3,Minion,blue,2.0,1.0,1.0,3.0,bilanciata,0.841
+88,Red Sage,Minion,blue,2.0,1.0,1.0,3.0,bilanciata,0.841
+195,Big Time Bounty Hunter,Minion,colorless,3.0,,2.0,2.0,bilanciata,0.842
+216,Sunborn Gorgon,Minion,colorless,3.0,,2.0,2.0,bilanciata,0.842
+219,Teller of Tales,Minion,colorless,3.0,,2.0,2.0,bilanciata,0.842
+181,Visions from the Void,Spell,red,2.0,1.0,,,bilanciata,0.842
+67,Burn the Heretics,Spell,blue,2.0,1.0,,,bilanciata,0.852
+69,Crimson Hunter,Minion,blue,2.0,1.0,1.0,2.0,bilanciata,0.855
+41,Rising Mist,Spell,black,2.0,1.0,,,bilanciata,0.864
+123,Guardian of the Valley,Minion,green,2.0,1.0,2.0,1.0,bilanciata,0.876
+91,Siren Song,Spell,blue,1.0,2.0,,,bilanciata,0.878
+87,Pray for Demise,Spell,blue,1.0,2.0,,,bilanciata,0.878
+89,Request Tribute,Spell,blue,1.0,2.0,,,bilanciata,0.878
+176,Grim Mercenaries,Minion,red,2.0,1.0,2.0,3.0,bilanciata,0.907
+182,Radiant Banisher,Minion,red,2.0,1.0,2.0,2.0,bilanciata,0.939
+136,Reborn Wanderer,Minion,green,2.0,1.0,2.0,2.0,bilanciata,0.943
+172,Flameborn Tiger,Minion,red,2.0,1.0,3.0,2.0,bilanciata,0.946
+204,Flame Elemental,Minion,colorless,5.0,,3.0,3.0,debole,0.416
+6,"Geodo, Walking Fortress",Minion,black,4.0,1.0,4.0,4.0,debole,0.435
+37,Otherworldly Slash,Spell,black,6.0,1.0,,,debole,0.437
+117,Distant Howl,Spell,green,4.0,1.0,,,debole,0.443
+101,Birthed from Soil,Spell,green,5.0,1.0,,,debole,0.444
+110,Rise of the Forsaken,Spell,green,8.0,1.0,,,debole,0.446
+50,"Faust, Crazed Creator",Minion,blue,3.0,2.0,1.0,1.0,debole,0.457
+21,Cold-Hearted Overseer,Minion,black,5.0,1.0,0.0,4.0,debole,0.461
+183,Red Sunset,Spell,red,4.0,1.0,,,debole,0.465
+70,Cruel Ritual,Spell,blue,1.0,3.0,,,debole,0.471
+214,Rogue Necromancer,Minion,colorless,5.0,,2.0,5.0,debole,0.499
+61,Submit to Will,Spell,blue,1.0,4.0,,,debole,0.499
+38,Patient Maiden,Minion,black,5.0,1.0,3.0,4.0,debole,0.507
+9,Magic Mirrors on the Wall,Spell,black,0.0,7.0,,,debole,0.508
+131,Living Hive,Minion,green,6.0,1.0,4.0,4.0,debole,0.516
+22,Dark Dealings,Spell,black,2.0,3.0,,,debole,0.52
+198,Bomb Carrier Imp,Minion,colorless,6.0,,6.0,1.0,debole,0.524
+56,Magical Convergence,Spell,blue,0.0,7.0,,,debole,0.545
+57,Mass Hysteria,Spell,blue,0.0,7.0,,,debole,0.545
+174,"Maul, Starhopper",Minion,red,4.0,1.0,5.0,5.0,debole,0.555
+97,Accelerate Evolution,Quest,green,0.0,4.0,,,debole,0.598
+220,Time-worn Dragon,Minion,colorless,7.0,,5.0,5.0,debole,0.62
+58,"Nikola, Disgraced Genius",Minion,blue,2.0,2.0,3.0,3.0,debole,0.648
+137,Roaming Vendigo,Minion,green,3.0,2.0,3.0,3.0,debole,0.66
+81,Faithless Saint,Minion,blue,2.0,2.0,3.0,3.0,debole,0.663
+156,Upwind,Quest,red,0.0,3.0,,,debole,0.668
+7,"Grivous, Plaguehorde Commander",Minion,black,2.0,2.0,2.0,4.0,debole,0.683
+189,Cataclysm Core,Minion,red,0.0,2.0,0.0,3.0,debole,0.689
+12,"Rau, the Eternal",Minion,black,6.0,1.0,6.0,6.0,debole,0.699
+144,Winged Horror,Minion,green,0.0,3.0,3.0,3.0,debole,0.713
+52,"Fried, Lightning Blade",Minion,blue,5.0,1.0,6.0,6.0,debole,0.741
+126,Insector Lazar,Minion,green,4.0,2.0,4.0,4.0,debole,0.744
+108,"Rag, Forsaken King",Minion,green,5.0,3.0,0.0,8.0,debole,0.749
+211,Nightwing,Minion,colorless,10.0,,10.0,10.0,debole,0.753
+127,Insector Raptor,Minion,green,3.0,2.0,4.0,3.0,debole,0.757
+84,Highwayman,Minion,blue,1.0,2.0,5.0,5.0,debole,0.763
+113,Ancient Lich Lord,Minion,green,2.0,6.0,0.0,8.0,debole,0.763
+40,Restricted,Minion,black,0.0,6.0,0.0,6.0,debole,0.766
+150,"Kaelos, the Featherkin Harbinger",Minion,red,2.0,3.0,3.0,2.0,debole,0.796
+155,"Trishula, Threefold Sovereign",Minion,red,8.0,1.0,9.0,9.0,debole,0.803
+105,"Mahogan, Wooden Giant",Minion,green,8.0,2.0,8.0,8.0,debole,0.811
+15,"Valdris, Undying Giant",Minion,black,8.0,2.0,8.0,8.0,debole,0.814
+62,"Tiwaz, Runic Titan",Minion,blue,8.0,2.0,8.0,8.0,debole,0.818
+166,Blackfeather Vanguard,Minion,red,2.0,2.0,4.0,3.0,debole,0.832
+140,Swamp Lurker,Minion,green,0.0,6.0,4.0,4.0,debole,0.841
+160,Infernity Archfiend,Minion,red,0.0,4.0,4.0,2.0,debole,0.842
+159,"Zorc, Archfiend Overlord",Minion,red,4.0,2.0,4.0,5.0,debole,0.846
+177,Damned Necromancer,Minion,red,0.0,3.0,0.0,4.0,debole,0.849
+85,Mana Spirit,Minion,blue,0.0,6.0,4.0,6.0,debole,0.851
+151,Highroller of the Abyss,Minion,red,3.0,2.0,3.0,4.0,debole,0.864
+2,"Arkos, Plagueborn",Minion,black,6.0,4.0,6.0,6.0,debole,0.888
+145,"B00M, Iron-Bone Doctor",Minion,red,5.0,2.0,7.0,7.0,debole,0.927
+148,Flameborn Phoenix,Minion,red,3.0,2.0,5.0,4.0,debole,0.942
+165,Blackfeather Striker,Minion,red,2.0,3.0,5.0,4.0,debole,0.953
+164,Blackfeather Armormaster,Minion,red,3.0,3.0,4.0,5.0,debole,0.956
+149,Helios - Knight of the Rising Sun,Minion,red,6.0,4.0,6.0,6.0,debole,0.966
+205,Fugitive Burglar,Minion,colorless,1.0,,1.0,3.0,forte,0.464
+94,Troublesome Companion,Minion,blue,1.0,1.0,2.0,3.0,forte,0.484
+28,Imprisoned Imp,Minion,black,0.0,2.0,0.0,1.0,forte,0.485
+13,Stack the Deck,Spell,black,0.0,1.0,,,forte,0.584
+19,Brain Fog,Spell,black,0.0,1.0,,,forte,0.608
+1,Awaken the Meek,Quest,black,0.0,1.0,,,forte,0.612
+35,March of the Plaguehorde,Spell,black,0.0,1.0,,,forte,0.617
+194,Big Shield Defender,Minion,colorless,1.0,,0.0,3.0,forte,0.62
+25,Ethereal Embrace,Spell,black,0.0,0.0,,,forte,0.629
+185,Siege Titan,Minion,red,1.0,1.0,1.0,1.0,forte,0.631
+26,Flash Freeze,Spell,black,0.0,1.0,,,forte,0.643
+4,Bound by Darkness,Spell,black,0.0,1.0,,,forte,0.669
+112,Aimless One,Minion,green,0.0,1.0,3.0,3.0,forte,0.673
+206,Graveborn Prowler,Minion,colorless,1.0,,1.0,2.0,forte,0.694
+193,Poisonous Gnome,Minion,colorless,1.0,,2.0,1.0,forte,0.725
+32,Invasive Mothership,Minion,black,0.0,1.0,0.0,2.0,forte,0.728
+47,Vindictive Spirit,Minion,black,0.0,1.0,0.0,2.0,forte,0.729
+16,Armoured Mole,Minion,black,0.0,1.0,0.0,1.0,forte,0.738
+200,City Vulture,Minion,colorless,1.0,,1.0,1.0,forte,0.741
+122,Giant Cocoon,Spell,green,1.0,1.0,,,forte,0.762
+188,Tiger Spirit Totem,Spell,red,1.0,1.0,,,forte,0.776
+99,Awaken the Elders,Spell,green,0.0,1.0,,,forte,0.784
+125,Insectile Transformation,Spell,green,0.0,1.0,,,forte,0.805
+139,Suspicious Apple,Spell,green,0.0,1.0,,,forte,0.805
+53,Friendly Fire,Quest,blue,0.0,1.0,,,forte,0.82
+73,Disgraceful Spark,Spell,blue,0.0,1.0,,,forte,0.821
+134,Pray to the Elders,Spell,green,0.0,1.0,,,forte,0.832
+120,Follow the Footprints,Spell,green,0.0,1.0,,,forte,0.835
+95,Vampirism,Spell,blue,0.0,1.0,,,forte,0.84
+65,Ancient Cloud,Spell,blue,0.0,1.0,,,forte,0.84
+86,Mysterious Potion,Spell,blue,0.0,1.0,,,forte,0.84
+191,Vessel of Forsaken Riches,Spell,red,0.0,0.0,,,forte,0.846
+192,Wolf Spirit Totem,Spell,red,1.0,1.0,,,forte,0.846
+59,"Ronald, Dark Clown",Minion,blue,0.0,1.0,1.0,1.0,forte,0.848
+163,Bear Spirit Totem,Spell,red,1.0,1.0,,,forte,0.856
+76,Endless Research,Spell,blue,0.0,1.0,,,forte,0.857
+64,Abominable Barrier,Spell,blue,0.0,1.0,,,forte,0.857
+63,Unnatural Disaster,Spell,blue,0.0,1.0,,,forte,0.874
+54,Lightning Bolt in a Bottle,Spell,blue,0.0,1.0,,,forte,0.876
+154,See Red,Spell,red,0.0,1.0,,,forte,0.88
+133,Overgrown Croaker,Minion,green,0.0,1.0,0.0,1.0,forte,0.886
+118,Dryad of the Grove,Minion,green,0.0,1.0,1.0,2.0,forte,0.887
+124,Haunting Woods,Minion,green,0.0,1.0,1.0,1.0,forte,0.89
+72,Disgraced Disciple,Minion,blue,0.0,1.0,1.0,2.0,forte,0.894
+96,Young Heir,Minion,blue,0.0,1.0,1.0,1.0,forte,0.914
+186,Spirit Armour,Spell,red,0.0,1.0,,,forte,0.916
+77,Experiment #1,Minion,blue,0.0,1.0,1.0,1.0,forte,0.918
+83,Grinning Merchant,Minion,blue,0.0,1.0,1.0,1.0,forte,0.918
+161,Battlefield Instigator,Minion,red,0.0,1.0,0.0,2.0,forte,0.919
+187,Icarus Attack,Spell,red,0.0,1.0,,,forte,0.92
+168,Bleakfeather Kalut,Minion,red,0.0,1.0,1.0,2.0,forte,0.923
+162,Battlehardened Quartermaster,Minion,red,0.0,1.0,1.0,2.0,forte,0.925
+170,Devoid Trickster,Minion,red,0.0,1.0,2.0,1.0,forte,0.941
+167,Bleakfeather Gale,Minion,red,0.0,1.0,2.0,1.0,forte,0.947
+146,Hellgate,Spell,red,0.0,1.0,,,forte,0.956
+152,Overwhelming Power,Spell,red,0.0,1.0,,,forte,0.957
+157,"Vino, Blackfeather Ascendant",Minion,red,0.0,1.0,0.0,1.0,forte,0.959

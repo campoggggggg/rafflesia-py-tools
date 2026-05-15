@@ -21,7 +21,7 @@ print(f"var  efficiency: {df['efficiency'].var():.3f}")
 top = (
     df[["name", "type_line", "color", "cost_total", "atk", "def", "efficiency", "contributions"]]
     .sort_values("efficiency", ascending=False)
-    .head(20)
+    
 )
 
 print()

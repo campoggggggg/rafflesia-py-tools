@@ -1,0 +1,1556 @@
+[
+  {
+    "id":1,
+    "name":"Awaken the Meek",
+    "type_line":"Quest",
+    "power_class":"forte",
+    "power_class_conf":0.612
+  },
+  {
+    "id":2,
+    "name":"Arkos, Plagueborn",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.888
+  },
+  {
+    "id":191,
+    "name":"Vessel of Forsaken Riches",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.846
+  },
+  {
+    "id":6,
+    "name":"Geodo, Walking Fortress",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.435
+  },
+  {
+    "id":7,
+    "name":"Grivous, Plaguehorde Commander",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.683
+  },
+  {
+    "id":8,
+    "name":"Laios, Rotting King",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.783
+  },
+  {
+    "id":192,
+    "name":"Wolf Spirit Totem",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.846
+  },
+  {
+    "id":10,
+    "name":"Miautz, Criminal Mastermind",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.479
+  },
+  {
+    "id":11,
+    "name":"Mitril, the Forgotten",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.795
+  },
+  {
+    "id":12,
+    "name":"Rau, the Eternal",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.699
+  },
+  {
+    "id":14,
+    "name":"Trivikrama, Gran Conqueror",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.651
+  },
+  {
+    "id":15,
+    "name":"Valdris, Undying Giant",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.814
+  },
+  {
+    "id":16,
+    "name":"Armoured Mole",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.738
+  },
+  {
+    "id":183,
+    "name":"Red Sunset",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.465
+  },
+  {
+    "id":21,
+    "name":"Cold-Hearted Overseer",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.461
+  },
+  {
+    "id":23,
+    "name":"Death Dealer",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.445
+  },
+  {
+    "id":24,
+    "name":"Doomed Soldier",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.822
+  },
+  {
+    "id":27,
+    "name":"Gloomy Infiltrator",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.605
+  },
+  {
+    "id":28,
+    "name":"Imprisoned Imp",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.485
+  },
+  {
+    "id":29,
+    "name":"Invasive Architect",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.698
+  },
+  {
+    "id":30,
+    "name":"Invasive Brute",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.698
+  },
+  {
+    "id":31,
+    "name":"Invasive Diplomat",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.698
+  },
+  {
+    "id":32,
+    "name":"Invasive Mothership",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.728
+  },
+  {
+    "id":33,
+    "name":"Invasive Technomancer",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.698
+  },
+  {
+    "id":3,
+    "name":"Bad Omen",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.759
+  },
+  {
+    "id":4,
+    "name":"Bound by Darkness",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.669
+  },
+  {
+    "id":13,
+    "name":"Stack the Deck",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.584
+  },
+  {
+    "id":18,
+    "name":"Black Door",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.749
+  },
+  {
+    "id":19,
+    "name":"Brain Fog",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.608
+  },
+  {
+    "id":25,
+    "name":"Ethereal Embrace",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.629
+  },
+  {
+    "id":34,
+    "name":"Invasive Vanguard",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.698
+  },
+  {
+    "id":36,
+    "name":"Mysterious Shade",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.805
+  },
+  {
+    "id":38,
+    "name":"Patient Maiden",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.507
+  },
+  {
+    "id":39,
+    "name":"Relentless Hunter",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.674
+  },
+  {
+    "id":40,
+    "name":"Restricted",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.766
+  },
+  {
+    "id":43,
+    "name":"Shining Drifter",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.546
+  },
+  {
+    "id":45,
+    "name":"Thing in the Ice",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.732
+  },
+  {
+    "id":47,
+    "name":"Vindictive Spirit",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.729
+  },
+  {
+    "id":48,
+    "name":"Wrathful Vassal",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.703
+  },
+  {
+    "id":49,
+    "name":"Edwin, Legendary Thief",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.658
+  },
+  {
+    "id":50,
+    "name":"Faust, Crazed Creator",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.457
+  },
+  {
+    "id":51,
+    "name":"Francus, Pope of Demise",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.613
+  },
+  {
+    "id":52,
+    "name":"Fried, Lightning Blade",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.741
+  },
+  {
+    "id":53,
+    "name":"Friendly Fire",
+    "type_line":"Quest",
+    "power_class":"forte",
+    "power_class_conf":0.82
+  },
+  {
+    "id":55,
+    "name":"Lucard, Lord of Bats",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.363
+  },
+  {
+    "id":58,
+    "name":"Nikola, Disgraced Genius",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.648
+  },
+  {
+    "id":59,
+    "name":"Ronald, Dark Clown",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.848
+  },
+  {
+    "id":60,
+    "name":"Sadu, False Prophet",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.805
+  },
+  {
+    "id":62,
+    "name":"Tiwaz, Runic Titan",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.818
+  },
+  {
+    "id":66,
+    "name":"Back Alley Assassin",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.533
+  },
+  {
+    "id":69,
+    "name":"Crimson Hunter",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.855
+  },
+  {
+    "id":72,
+    "name":"Disgraced Disciple",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.894
+  },
+  {
+    "id":35,
+    "name":"March of the Plaguehorde",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.617
+  },
+  {
+    "id":44,
+    "name":"Temptation of the Night",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.526
+  },
+  {
+    "id":56,
+    "name":"Magical Convergence",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.545
+  },
+  {
+    "id":57,
+    "name":"Mass Hysteria",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.545
+  },
+  {
+    "id":68,
+    "name":"Burning Knowledge",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.502
+  },
+  {
+    "id":71,
+    "name":"Deadly Poison",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.687
+  },
+  {
+    "id":74,
+    "name":"Dracul's Follower",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.747
+  },
+  {
+    "id":77,
+    "name":"Experiment #1",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.918
+  },
+  {
+    "id":78,
+    "name":"Experiment #2",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.757
+  },
+  {
+    "id":79,
+    "name":"Experiment #3",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.841
+  },
+  {
+    "id":80,
+    "name":"Experiment #4",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.786
+  },
+  {
+    "id":81,
+    "name":"Faithless Saint",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.663
+  },
+  {
+    "id":83,
+    "name":"Grinning Merchant",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.918
+  },
+  {
+    "id":84,
+    "name":"Highwayman",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.763
+  },
+  {
+    "id":85,
+    "name":"Mana Spirit",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.851
+  },
+  {
+    "id":88,
+    "name":"Red Sage",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.841
+  },
+  {
+    "id":92,
+    "name":"Stoic Runehart",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.597
+  },
+  {
+    "id":94,
+    "name":"Troublesome Companion",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.484
+  },
+  {
+    "id":96,
+    "name":"Young Heir",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.914
+  },
+  {
+    "id":97,
+    "name":"Accelerate Evolution",
+    "type_line":"Quest",
+    "power_class":"debole",
+    "power_class_conf":0.598
+  },
+  {
+    "id":98,
+    "name":"Apis, Insector Matriarch",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.77
+  },
+  {
+    "id":100,
+    "name":"Birke, Protector of Life",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.457
+  },
+  {
+    "id":102,
+    "name":"Braum, the Defiant",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.642
+  },
+  {
+    "id":103,
+    "name":"Cocci, Curious Ladybug",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.756
+  },
+  {
+    "id":104,
+    "name":"Disflora, Apex Hunter",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.485
+  },
+  {
+    "id":105,
+    "name":"Mahogan, Wooden Giant",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.811
+  },
+  {
+    "id":108,
+    "name":"Rag, Forsaken King",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.749
+  },
+  {
+    "id":76,
+    "name":"Endless Research",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.857
+  },
+  {
+    "id":75,
+    "name":"Enchanted Grove",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.801
+  },
+  {
+    "id":82,
+    "name":"Forced Conversion",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.801
+  },
+  {
+    "id":91,
+    "name":"Siren Song",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.878
+  },
+  {
+    "id":95,
+    "name":"Vampirism",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.84
+  },
+  {
+    "id":101,
+    "name":"Birthed from Soil",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.444
+  },
+  {
+    "id":106,
+    "name":"Outrage",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.5
+  },
+  {
+    "id":107,
+    "name":"Population Devastation Virus",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.724
+  },
+  {
+    "id":111,
+    "name":"Taxus, the Rotten",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.658
+  },
+  {
+    "id":112,
+    "name":"Aimless One",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.673
+  },
+  {
+    "id":113,
+    "name":"Ancient Lich Lord",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.763
+  },
+  {
+    "id":114,
+    "name":"Benevolent Oak",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.818
+  },
+  {
+    "id":118,
+    "name":"Dryad of the Grove",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.887
+  },
+  {
+    "id":119,
+    "name":"Feral Shaman",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.544
+  },
+  {
+    "id":123,
+    "name":"Guardian of the Valley",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.876
+  },
+  {
+    "id":124,
+    "name":"Haunting Woods",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.89
+  },
+  {
+    "id":126,
+    "name":"Insector Lazar",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.744
+  },
+  {
+    "id":127,
+    "name":"Insector Raptor",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.757
+  },
+  {
+    "id":128,
+    "name":"Insector Scrabble",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.635
+  },
+  {
+    "id":129,
+    "name":"Insector Workerbee",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.71
+  },
+  {
+    "id":130,
+    "name":"Keeper of the Grove",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.562
+  },
+  {
+    "id":131,
+    "name":"Living Hive",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.516
+  },
+  {
+    "id":133,
+    "name":"Overgrown Croaker",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.886
+  },
+  {
+    "id":135,
+    "name":"Ravager",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.564
+  },
+  {
+    "id":136,
+    "name":"Reborn Wanderer",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.943
+  },
+  {
+    "id":137,
+    "name":"Roaming Vendigo",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.66
+  },
+  {
+    "id":140,
+    "name":"Swamp Lurker",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.841
+  },
+  {
+    "id":141,
+    "name":"Territorial Bjorn",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.701
+  },
+  {
+    "id":142,
+    "name":"Wandering Forest",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.42
+  },
+  {
+    "id":143,
+    "name":"Wild Scavenger",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.772
+  },
+  {
+    "id":144,
+    "name":"Winged Horror",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.713
+  },
+  {
+    "id":116,
+    "name":"Cruel Salvation",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.695
+  },
+  {
+    "id":117,
+    "name":"Distant Howl",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.443
+  },
+  {
+    "id":121,
+    "name":"Forced Metamorphosis",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.637
+  },
+  {
+    "id":122,
+    "name":"Giant Cocoon",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.762
+  },
+  {
+    "id":125,
+    "name":"Insectile Transformation",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.805
+  },
+  {
+    "id":132,
+    "name":"Migration of the Forsaken",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.543
+  },
+  {
+    "id":134,
+    "name":"Pray to the Elders",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.832
+  },
+  {
+    "id":139,
+    "name":"Suspicious Apple",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.805
+  },
+  {
+    "id":115,
+    "name":"Commune with the Wilds",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.68
+  },
+  {
+    "id":120,
+    "name":"Follow the Footprints",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.835
+  },
+  {
+    "id":138,
+    "name":"Seek Asylum",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.719
+  },
+  {
+    "id":175,
+    "name":"Wildfire",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.591
+  },
+  {
+    "id":193,
+    "name":"Poisonous Gnome",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.725
+  },
+  {
+    "id":194,
+    "name":"Big Shield Defender",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.62
+  },
+  {
+    "id":195,
+    "name":"Big Time Bounty Hunter",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.842
+  },
+  {
+    "id":196,
+    "name":"Black Rider",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.67
+  },
+  {
+    "id":197,
+    "name":"Bloody Masochist",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.742
+  },
+  {
+    "id":198,
+    "name":"Bomb Carrier Imp",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.524
+  },
+  {
+    "id":199,
+    "name":"Caring Attendant",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.687
+  },
+  {
+    "id":200,
+    "name":"City Vulture",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.741
+  },
+  {
+    "id":201,
+    "name":"Demonic Prophet",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.682
+  },
+  {
+    "id":202,
+    "name":"Eel Dragon",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.718
+  },
+  {
+    "id":203,
+    "name":"Fiendish Bookworm",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.673
+  },
+  {
+    "id":204,
+    "name":"Flame Elemental",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.416
+  },
+  {
+    "id":205,
+    "name":"Fugitive Burglar",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.464
+  },
+  {
+    "id":206,
+    "name":"Graveborn Prowler",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.694
+  },
+  {
+    "id":207,
+    "name":"Masked Spy",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.72
+  },
+  {
+    "id":208,
+    "name":"Mouse Herder",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.681
+  },
+  {
+    "id":209,
+    "name":"Mouse Seer",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.652
+  },
+  {
+    "id":210,
+    "name":"Murderous Spouse",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.718
+  },
+  {
+    "id":211,
+    "name":"Nightwing",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.753
+  },
+  {
+    "id":212,
+    "name":"Nordic Shield Master",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.67
+  },
+  {
+    "id":213,
+    "name":"Realm Walker",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.644
+  },
+  {
+    "id":214,
+    "name":"Rogue Necromancer",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.499
+  },
+  {
+    "id":215,
+    "name":"Strike Squad",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.81
+  },
+  {
+    "id":216,
+    "name":"Sunborn Gorgon",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.842
+  },
+  {
+    "id":217,
+    "name":"Surprising Lama",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.651
+  },
+  {
+    "id":218,
+    "name":"Taunting Legionnaire",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.784
+  },
+  {
+    "id":219,
+    "name":"Teller of Tales",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.842
+  },
+  {
+    "id":220,
+    "name":"Time-worn Dragon",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.62
+  },
+  {
+    "id":221,
+    "name":"Trash Scavenger",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.738
+  },
+  {
+    "id":222,
+    "name":"Wise Herbologist",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.446
+  },
+  {
+    "id":171,
+    "name":"Flameborn Bear",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.679
+  },
+  {
+    "id":172,
+    "name":"Flameborn Tiger",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.946
+  },
+  {
+    "id":173,
+    "name":"Flameborn Wolf",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.785
+  },
+  {
+    "id":174,
+    "name":"Maul, Starhopper",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.555
+  },
+  {
+    "id":181,
+    "name":"Visions from the Void",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.842
+  },
+  {
+    "id":163,
+    "name":"Bear Spirit Totem",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.856
+  },
+  {
+    "id":146,
+    "name":"Hellgate",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.956
+  },
+  {
+    "id":152,
+    "name":"Overwhelming Power",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.957
+  },
+  {
+    "id":158,
+    "name":"Scorching Sun",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.689
+  },
+  {
+    "id":180,
+    "name":"Archfiend Lightning",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.711
+  },
+  {
+    "id":145,
+    "name":"B00M, Iron-Bone Doctor",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.927
+  },
+  {
+    "id":148,
+    "name":"Flameborn Phoenix",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.942
+  },
+  {
+    "id":149,
+    "name":"Helios - Knight of the Rising Sun",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.966
+  },
+  {
+    "id":150,
+    "name":"Kaelos, the Featherkin Harbinger",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.796
+  },
+  {
+    "id":151,
+    "name":"Highroller of the Abyss",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.864
+  },
+  {
+    "id":154,
+    "name":"See Red",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.88
+  },
+  {
+    "id":155,
+    "name":"Trishula, Threefold Sovereign",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.803
+  },
+  {
+    "id":156,
+    "name":"Upwind",
+    "type_line":"Quest",
+    "power_class":"debole",
+    "power_class_conf":0.668
+  },
+  {
+    "id":157,
+    "name":"Vino, Blackfeather Ascendant",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.959
+  },
+  {
+    "id":159,
+    "name":"Zorc, Archfiend Overlord",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.846
+  },
+  {
+    "id":160,
+    "name":"Infernity Archfiend",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.842
+  },
+  {
+    "id":161,
+    "name":"Battlefield Instigator",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.919
+  },
+  {
+    "id":162,
+    "name":"Battlehardened Quartermaster",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.925
+  },
+  {
+    "id":164,
+    "name":"Blackfeather Armormaster",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.956
+  },
+  {
+    "id":165,
+    "name":"Blackfeather Striker",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.953
+  },
+  {
+    "id":166,
+    "name":"Blackfeather Vanguard",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.832
+  },
+  {
+    "id":167,
+    "name":"Bleakfeather Gale",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.947
+  },
+  {
+    "id":168,
+    "name":"Bleakfeather Kalut",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.923
+  },
+  {
+    "id":169,
+    "name":"Chronicler of the Void",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.721
+  },
+  {
+    "id":170,
+    "name":"Devoid Trickster",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.941
+  },
+  {
+    "id":176,
+    "name":"Grim Mercenaries",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.907
+  },
+  {
+    "id":177,
+    "name":"Damned Necromancer",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.849
+  },
+  {
+    "id":178,
+    "name":"Force in Exile",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.609
+  },
+  {
+    "id":179,
+    "name":"Paper Frog",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.787
+  },
+  {
+    "id":147,
+    "name":"Divine Smite",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.805
+  },
+  {
+    "id":182,
+    "name":"Radiant Banisher",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.939
+  },
+  {
+    "id":185,
+    "name":"Siege Titan",
+    "type_line":"Minion",
+    "power_class":"forte",
+    "power_class_conf":0.631
+  },
+  {
+    "id":189,
+    "name":"Cataclysm Core",
+    "type_line":"Minion",
+    "power_class":"debole",
+    "power_class_conf":0.689
+  },
+  {
+    "id":190,
+    "name":"Valorous Commander",
+    "type_line":"Minion",
+    "power_class":"bilanciata",
+    "power_class_conf":0.821
+  },
+  {
+    "id":5,
+    "name":"Gate to the Underworld",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.505
+  },
+  {
+    "id":9,
+    "name":"Magic Mirrors on the Wall",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.508
+  },
+  {
+    "id":17,
+    "name":"Back Ritual",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.711
+  },
+  {
+    "id":20,
+    "name":"Cold Impact",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.723
+  },
+  {
+    "id":22,
+    "name":"Dark Dealings",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.52
+  },
+  {
+    "id":26,
+    "name":"Flash Freeze",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.643
+  },
+  {
+    "id":37,
+    "name":"Otherworldly Slash",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.437
+  },
+  {
+    "id":41,
+    "name":"Rising Mist",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.864
+  },
+  {
+    "id":42,
+    "name":"Rot Away",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.48
+  },
+  {
+    "id":46,
+    "name":"Vanish",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.749
+  },
+  {
+    "id":54,
+    "name":"Lightning Bolt in a Bottle",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.876
+  },
+  {
+    "id":61,
+    "name":"Submit to Will",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.499
+  },
+  {
+    "id":63,
+    "name":"Unnatural Disaster",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.874
+  },
+  {
+    "id":64,
+    "name":"Abominable Barrier",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.857
+  },
+  {
+    "id":65,
+    "name":"Ancient Cloud",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.84
+  },
+  {
+    "id":67,
+    "name":"Burn the Heretics",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.852
+  },
+  {
+    "id":70,
+    "name":"Cruel Ritual",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.471
+  },
+  {
+    "id":73,
+    "name":"Disgraceful Spark",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.821
+  },
+  {
+    "id":86,
+    "name":"Mysterious Potion",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.84
+  },
+  {
+    "id":87,
+    "name":"Pray for Demise",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.878
+  },
+  {
+    "id":89,
+    "name":"Request Tribute",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.878
+  },
+  {
+    "id":90,
+    "name":"Rune of Power",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.702
+  },
+  {
+    "id":93,
+    "name":"Trespass",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.646
+  },
+  {
+    "id":99,
+    "name":"Awaken the Elders",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.784
+  },
+  {
+    "id":109,
+    "name":"Rapid Decay",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.703
+  },
+  {
+    "id":153,
+    "name":"Reinforcements of the Army",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.576
+  },
+  {
+    "id":186,
+    "name":"Spirit Armour",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.916
+  },
+  {
+    "id":110,
+    "name":"Rise of the Forsaken",
+    "type_line":"Spell",
+    "power_class":"debole",
+    "power_class_conf":0.446
+  },
+  {
+    "id":188,
+    "name":"Tiger Spirit Totem",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.776
+  },
+  {
+    "id":184,
+    "name":"Siege",
+    "type_line":"Spell",
+    "power_class":"bilanciata",
+    "power_class_conf":0.798
+  },
+  {
+    "id":187,
+    "name":"Icarus Attack",
+    "type_line":"Spell",
+    "power_class":"forte",
+    "power_class_conf":0.92
+  }
+]
